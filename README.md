@@ -71,7 +71,7 @@ Os documentos de planejamento e arquitetura devem ser mantidos junto ao código-
 - `diagrama-de-componentes.md` — componentes, camadas, portas e dependências.
 - `diagrama-de-classes.md` — estruturas, atributos e operações representados no diagrama de classes.
 - `diagrama-de-implantacao.md` — nós e comunicações previstos para implantação.
-- `sequencia (1).md` — fluxo de interação e processamento representado no diagrama de sequência.
+- `sequencia.md` — fluxo de interação e processamento representado no diagrama de sequência.
 
 As especificações e os planos de cada incremento, como `spec.md`, `plan.md` e `tasks.md`, serão criados ou atualizados conforme o fluxo SDD.
 
