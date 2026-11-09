@@ -66,6 +66,7 @@ Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte
 | Arquivo | Conteúdo | Situação |
 |---|---|---|
 | `AGENTS.md` | Orientações para assistentes de programação e regras de implementação. | No repositório |
+| `CLAUDE.md` | Ponto de entrada do Claude Code; direciona para o `AGENTS.md` e para a documentação. | No repositório |
 | `docs/fluxo-sdd.md` | Fluxo de trabalho baseado em Spec-Driven Development. | No repositório |
 | `docs/decisoes-pendentes.md` | Registro de conflitos, lacunas e decisões que precisam de aprovação. | Pendente de envio |
 | `docs/diagramas/diagrama-casos-de-uso.md` | Atores e funcionalidades representados no diagrama de casos de uso. | No repositório |
@@ -73,9 +74,9 @@ Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte
 | `docs/diagramas/diagrama-de-componentes.md` | Componentes, camadas, portas e dependências. | No repositório |
 | `docs/diagramas/diagrama-de-classes.md` | Estruturas, atributos e operações representados no diagrama de classes. | No repositório |
 | `docs/diagramas/diagrama-de-implantacao.md` | Nós e comunicações previstos para implantação. | No repositório |
-| `docs/diagramas/sequencia.md` | Fluxo de interação e processamento representado no diagrama de sequência. | Pendente de envio |
+| `docs/diagramas/sequencia.md` | Fluxo de interação e processamento representado no diagrama de sequência. | No repositório |
 
-O `AGENTS.md` fica na raiz porque é o local em que os assistentes de programação o procuram.
+O `AGENTS.md` e o `CLAUDE.md` ficam na raiz porque é o local em que os assistentes de programação os procuram.
 
 As especificações e os planos de cada incremento, como `spec.md`, `plan.md` e `tasks.md`, serão criados ou atualizados conforme o fluxo SDD.
 
