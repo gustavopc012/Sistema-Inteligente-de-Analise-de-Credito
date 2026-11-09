@@ -1,7 +1,5 @@
 # CreditEngine — Sistema Inteligente de Análise de Crédito
 
-Projeto acadêmico da **Equipe Omicron**, desenvolvido em **Elixir**.
-
 Este repositório contém uma estrutura inicial executável para evoluções futuras. Nesta etapa, o projeto compila e possui testes automatizados, mas **não implementa decisões reais de crédito, cálculo de score ou detecção de fraude**.
 
 ## Requisitos
