@@ -61,17 +61,21 @@ A presença dessas tecnologias nos diagramas registra o planejamento atual, mas 
 
 ## Estrutura da documentação
 
-Os documentos de planejamento e arquitetura devem ser mantidos junto ao código-fonte. A documentação atualmente organizada inclui:
+Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte, na seguinte organização:
 
-- `AGENTS.md` — orientações para assistentes de programação e regras de implementação.
-- `fluxo-sdd.md` — fluxo de trabalho baseado em Spec-Driven Development.
-- `decisoes-pendentes.md` — registro de conflitos, lacunas e decisões que precisam de aprovação.
-- `diagrama-casos-de-uso.md` — atores e funcionalidades representados no diagrama de casos de uso.
-- `diagrama-de-pacotes.md` — organização dos pacotes e seus componentes.
-- `diagrama-de-componentes.md` — componentes, camadas, portas e dependências.
-- `diagrama-de-classes.md` — estruturas, atributos e operações representados no diagrama de classes.
-- `diagrama-de-implantacao.md` — nós e comunicações previstos para implantação.
-- `sequencia.md` — fluxo de interação e processamento representado no diagrama de sequência.
+| Arquivo | Conteúdo | Situação |
+|---|---|---|
+| `AGENTS.md` | Orientações para assistentes de programação e regras de implementação. | No repositório |
+| `docs/fluxo-sdd.md` | Fluxo de trabalho baseado em Spec-Driven Development. | No repositório |
+| `docs/decisoes-pendentes.md` | Registro de conflitos, lacunas e decisões que precisam de aprovação. | Pendente de envio |
+| `docs/diagramas/diagrama-casos-de-uso.md` | Atores e funcionalidades representados no diagrama de casos de uso. | No repositório |
+| `docs/diagramas/diagrama-de-pacotes.md` | Organização dos pacotes e seus componentes. | No repositório |
+| `docs/diagramas/diagrama-de-componentes.md` | Componentes, camadas, portas e dependências. | No repositório |
+| `docs/diagramas/diagrama-de-classes.md` | Estruturas, atributos e operações representados no diagrama de classes. | No repositório |
+| `docs/diagramas/diagrama-de-implantacao.md` | Nós e comunicações previstos para implantação. | No repositório |
+| `docs/diagramas/sequencia.md` | Fluxo de interação e processamento representado no diagrama de sequência. | Pendente de envio |
+
+O `AGENTS.md` fica na raiz porque é o local em que os assistentes de programação o procuram.
 
 As especificações e os planos de cada incremento, como `spec.md`, `plan.md` e `tasks.md`, serão criados ou atualizados conforme o fluxo SDD.
 
