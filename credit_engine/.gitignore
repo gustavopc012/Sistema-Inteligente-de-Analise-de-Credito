@@ -1,0 +1,11 @@
+# Arquivos gerados pelo Mix
+_build/
+deps/
+cover/
+
+# Editor e ferramentas de desenvolvimento
+.elixir_ls/
+
+# Arquivos temporários
+*.beam
+*.ez
