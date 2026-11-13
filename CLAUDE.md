@@ -12,9 +12,9 @@ Siga as instruções de @AGENTS.md em todas as tarefas. Em resumo: não invente 
 
 ## Tecnologias
 
-- **Definida:** Elixir.
+- **Em uso:** Elixir, com projeto Mix e testes ExUnit em `credit_engine/`. Sem dependências externas nesta etapa.
 - **Mencionadas nos diagramas, ainda não aprovadas:** Phoenix, Nx/Bumblebee, XGBoost, DNNs, Redis, PostgreSQL, NGINX, Kubernetes, Isolation Forest e K-Means. Não adicione nenhuma delas como dependência sem aprovação da equipe.
-- **Previstas no quadro da equipe:** ExUnit para testes, `mix format` e Credo.
+- **Previsto no quadro da equipe e ainda não adicionado:** Credo.
 
 ## Arquitetura planejada
 
@@ -50,11 +50,24 @@ Combinado da equipe: ao concluir uma tarefa, atualize o `README.md` se a mudanç
 | `README.md` | Visão geral, situação atual e decisões pendentes |
 | `AGENTS.md` | Regras para assistentes de programação |
 | `docs/fluxo-sdd.md` | Fluxo de trabalho e prompts de cada etapa |
+| `spec.md` | Especificação do incremento atual (recebimento e validação de propostas) |
+| `credit_engine/` | Projeto Elixir: código em `lib/`, testes em `test/` |
 | `docs/diagramas/` | Descrição dos diagramas UML; as seções "Pontos a esclarecer" são questões em aberto, não decisões aprovadas |
+
+## Comandos
+
+Execute a partir da pasta `credit_engine/`:
+
+- `mix compile` — compilar
+- `mix test` — rodar os testes
+- `mix format` — formatar o código
+- `iex -S mix` — console interativo
 
 ## Situação atual
 
 - Documentação e diagramas no repositório.
 - Escopo do MVP ainda não definido. O escopo fecha em 19/11.
-- Projeto Elixir ainda não criado. Quando for criado, registre aqui os comandos de compilação, testes e formatação.
+- Projeto Elixir criado em `credit_engine/`.
+- Primeiro incremento implementado: recebimento e validação de propostas (`CreditEngine.Proposal`). O `spec.md` aguarda aprovação da equipe.
+- Circuit Breaker, limiares de decisão e módulos de ML são esqueletos que retornam `{:error, :not_implemented}` até serem especificados.
 - Ainda não enviado: `docs/decisoes-pendentes.md`.

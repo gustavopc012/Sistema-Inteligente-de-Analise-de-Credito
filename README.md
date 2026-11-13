@@ -52,6 +52,7 @@ Essas funcionalidades representam o escopo planejado; não significam que já es
 ### Linguagem definida
 
 - **Elixir:** linguagem de programação do projeto.
+- **Mix e ExUnit:** estrutura do projeto e testes automatizados, em uso na pasta `credit_engine/`. O projeto não possui dependências externas nesta etapa.
 
 ### Tecnologias e ferramentas previstas nos diagramas
 
@@ -75,8 +76,18 @@ Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte
 | `docs/diagramas/diagrama-de-classes.md` | Estruturas, atributos e operações representados no diagrama de classes. | No repositório |
 | `docs/diagramas/diagrama-de-implantacao.md` | Nós e comunicações previstos para implantação. | No repositório |
 | `docs/diagramas/sequencia.md` | Fluxo de interação e processamento representado no diagrama de sequência. | No repositório |
+| `spec.md` | Especificação do incremento "Recebimento e validação de propostas". | No repositório (aguardando aprovação) |
+| `credit_engine/` | Projeto Elixir (Mix), com código-fonte, testes e instruções próprias em `credit_engine/README.md`. | No repositório |
 
 O `AGENTS.md` e o `CLAUDE.md` ficam na raiz porque é o local em que os assistentes de programação os procuram.
+
+Para compilar e testar o projeto:
+
+```bash
+cd credit_engine
+mix compile
+mix test
+```
 
 As especificações e os planos de cada incremento, como `spec.md`, `plan.md` e `tasks.md`, serão criados ou atualizados conforme o fluxo SDD.
 
