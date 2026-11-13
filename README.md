@@ -77,6 +77,7 @@ Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte
 | `docs/diagramas/diagrama-de-implantacao.md` | Nós e comunicações previstos para implantação. | No repositório |
 | `docs/diagramas/sequencia.md` | Fluxo de interação e processamento representado no diagrama de sequência. | No repositório |
 | `spec.md` | Especificação do incremento "Recebimento e validação de propostas". | No repositório (aguardando aprovação) |
+| `docs/verificacao-incremento-01.md` | Verificação do incremento 1 contra os critérios de aceitação do `spec.md`. | No repositório |
 | `credit_engine/` | Projeto Elixir (Mix), com código-fonte, testes e instruções próprias em `credit_engine/README.md`. | No repositório |
 
 O `AGENTS.md` e o `CLAUDE.md` ficam na raiz porque é o local em que os assistentes de programação os procuram.

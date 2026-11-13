@@ -51,6 +51,7 @@ Combinado da equipe: ao concluir uma tarefa, atualize o `README.md` se a mudanç
 | `AGENTS.md` | Regras para assistentes de programação |
 | `docs/fluxo-sdd.md` | Fluxo de trabalho e prompts de cada etapa |
 | `spec.md` | Especificação do incremento atual (recebimento e validação de propostas) |
+| `docs/verificacao-incremento-01.md` | Verificação do incremento 1 contra o `spec.md` |
 | `credit_engine/` | Projeto Elixir: código em `lib/`, testes em `test/` |
 | `docs/diagramas/` | Descrição dos diagramas UML; as seções "Pontos a esclarecer" são questões em aberto, não decisões aprovadas |
 
@@ -68,6 +69,6 @@ Execute a partir da pasta `credit_engine/`:
 - Documentação e diagramas no repositório.
 - Escopo do MVP ainda não definido. O escopo fecha em 19/11.
 - Projeto Elixir criado em `credit_engine/`.
-- Primeiro incremento implementado: recebimento e validação de propostas (`CreditEngine.Proposal`). O `spec.md` aguarda aprovação da equipe.
+- Primeiro incremento implementado e verificado: recebimento e validação de propostas (`CreditEngine.Proposal`). Resultados em `docs/verificacao-incremento-01.md`. O `spec.md` aguarda aprovação da equipe.
 - Circuit Breaker, limiares de decisão e módulos de ML são esqueletos que retornam `{:error, :not_implemented}` até serem especificados.
 - Ainda não enviado: `docs/decisoes-pendentes.md`.
