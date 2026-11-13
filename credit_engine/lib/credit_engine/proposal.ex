@@ -27,21 +27,19 @@ defmodule CreditEngine.Proposal do
     :macroeconomic_data
   ]
 
+  @allowed_fields [:id | @optional_map_fields]
+
+  # Converte nomes de campo em texto para os átomos conhecidos sem criar
+  # átomos novos. Chaves em texto desconhecidas permanecem em texto.
+  @field_names Map.new(@allowed_fields, &{Atom.to_string(&1), &1})
+
   @doc """
   Cria uma proposta a partir de um mapa de atributos.
   """
   def new(attrs) when is_map(attrs) do
-    attrs =
-      Map.new(attrs, fn
-        {key, value} when is_binary(key) ->
-          {String.to_existing_atom(key), value}
+    attrs = Map.new(attrs, fn {key, value} -> {normalize_key(key), value} end)
 
-        pair ->
-          pair
-      end)
-
-    allowed_keys = [:id | @optional_map_fields]
-    unknown_keys = Map.keys(attrs) -- allowed_keys
+    unknown_keys = Map.keys(attrs) -- @allowed_fields
 
     cond do
       unknown_keys != [] ->
@@ -53,12 +51,12 @@ defmodule CreditEngine.Proposal do
       true ->
         validate_optional_fields(attrs)
     end
-  rescue
-    ArgumentError ->
-      {:error, :invalid_fields}
   end
 
   def new(_attrs), do: {:error, :invalid_attributes}
+
+  defp normalize_key(key) when is_binary(key), do: Map.get(@field_names, key, key)
+  defp normalize_key(key), do: key
 
   defp validate_optional_fields(attrs) do
     case Enum.find(@optional_map_fields, fn field ->

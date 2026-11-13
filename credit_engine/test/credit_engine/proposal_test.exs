@@ -61,6 +61,12 @@ defmodule CreditEngine.ProposalTest do
                Proposal.new(%{id: "PROP-001", invalid_field: "valor"})
     end
 
+    test "identifica campos desconhecidos com chaves em texto" do
+      attrs = %{"id" => "PROP-006", "campo_desconhecido" => "valor"}
+
+      assert {:error, {:unknown_fields, ["campo_desconhecido"]}} = Proposal.new(attrs)
+    end
+
     test "rejeita atributos que não sejam mapas" do
       assert {:error, :invalid_attributes} = Proposal.new("inválido")
     end
