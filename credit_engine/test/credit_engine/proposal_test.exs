@@ -30,6 +30,32 @@ defmodule CreditEngine.ProposalTest do
       assert {:error, :invalid_id} = Proposal.new(%{})
     end
 
+    test "rejeita identificador não textual" do
+      assert {:error, :invalid_id} = Proposal.new(%{id: 123})
+    end
+
+    test "aceita nil nos campos complementares" do
+      attrs = %{
+        id: "PROP-004",
+        applicant_data: nil,
+        open_finance_data: nil,
+        behavioral_data: nil,
+        macroeconomic_data: nil
+      }
+
+      assert {:ok, proposal} = Proposal.new(attrs)
+      assert proposal.applicant_data == nil
+      assert proposal.macroeconomic_data == nil
+    end
+
+    test "aceita atributos com chaves em texto" do
+      attrs = %{"id" => "PROP-005", "applicant_data" => %{"age" => 30}}
+
+      assert {:ok, proposal} = Proposal.new(attrs)
+      assert proposal.id == "PROP-005"
+      assert proposal.applicant_data == %{"age" => 30}
+    end
+
     test "rejeita campos desconhecidos" do
       assert {:error, {:unknown_fields, [:invalid_field]}} =
                Proposal.new(%{id: "PROP-001", invalid_field: "valor"})
