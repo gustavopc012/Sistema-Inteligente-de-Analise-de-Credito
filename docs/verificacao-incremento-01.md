@@ -90,7 +90,7 @@ A correção preserva os requisitos e a arquitetura aprovados, sendo tratada com
 1. **Aprovação do `spec.md`:** a especificação ainda está com o status "aguardando revisão".
 2. **Ambiente de execução:** os testes foram executados fora das máquinas da equipe. Recomenda-se repetir localmente.
 3. **Chave repetida em átomo e em texto:** se a entrada trouxer o mesmo campo nas duas formas (por exemplo, `:id` e `"id"`), apenas um dos valores é mantido. O `spec.md` não define esse caso.
-4. **Fora do escopo deste incremento:** o `mix.exs` não registra `CreditEngine.Application` (`mod: {CreditEngine.Application, []}`). Isso será necessário quando houver processos supervisionados, como um Circuit Breaker implementado com GenServer.
+4. **Fora do escopo deste incremento:** o `mix.exs` não registra `CreditEngine.Application` (`mod: {CreditEngine.Application, []}`). Isso será necessário quando houver processos supervisionados, como um Circuit Breaker implementado com GenServer. *Resolvido em 13/11/2026: a aplicação passou a ser registrada no `mix.exs`.*
 5. **Ferramentas:** o Credo, previsto no quadro da equipe, ainda não foi configurado.
 
 ## 9. Referências
