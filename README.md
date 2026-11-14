@@ -69,7 +69,7 @@ Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte
 | `AGENTS.md` | Orientações para assistentes de programação e regras de implementação. | No repositório |
 | `CLAUDE.md` | Ponto de entrada do Claude Code; direciona para o `AGENTS.md` e para a documentação. | No repositório |
 | `docs/fluxo-sdd.md` | Fluxo de trabalho baseado em Spec-Driven Development. | No repositório |
-| `docs/decisoes-pendentes.md` | Registro de conflitos, lacunas e decisões que precisam de aprovação. | Pendente de envio |
+| `docs/decisoes-pendentes.md` | Registro de conflitos, lacunas e decisões que precisam de aprovação. | No repositório |
 | `docs/diagramas/diagrama-casos-de-uso.md` | Atores e funcionalidades representados no diagrama de casos de uso. | No repositório |
 | `docs/diagramas/diagrama-de-pacotes.md` | Organização dos pacotes e seus componentes. | No repositório |
 | `docs/diagramas/diagrama-de-componentes.md` | Componentes, camadas, portas e dependências. | No repositório |
@@ -120,7 +120,7 @@ Antes de implementar decisões definitivas de crédito, fraude ou risco sistêmi
 - Os contratos de comunicação entre componentes.
 - As tecnologias complementares e os critérios de monitoramento e retreinamento.
 
-A relação consolidada está em `decisoes-pendentes.md`. Nenhum valor de score, limite ou regra de decisão deve ser considerado definitivo sem aprovação da equipe.
+A relação consolidada está em `docs/decisoes-pendentes.md`. Nenhum valor de score, limite ou regra de decisão deve ser considerado definitivo sem aprovação da equipe.
 
 ## Diretrizes do projeto
 
