@@ -76,6 +76,7 @@ Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte
 | `docs/diagramas/diagrama-de-classes.md` | Estruturas, atributos e operações representados no diagrama de classes. | No repositório |
 | `docs/diagramas/diagrama-de-implantacao.md` | Nós e comunicações previstos para implantação. | No repositório |
 | `docs/diagramas/sequencia.md` | Fluxo de interação e processamento representado no diagrama de sequência. | No repositório |
+| `plan.md` | Plano técnico do MVP: escopo, tecnologias, contratos, valores de demonstração e cronograma. | No repositório |
 | `spec.md` | Especificação do incremento "Recebimento e validação de propostas". | No repositório (aguardando aprovação) |
 | `docs/verificacao-incremento-01.md` | Verificação do incremento 1 contra os critérios de aceitação do `spec.md`. | No repositório |
 | `credit_engine/` | Projeto Elixir (Mix), com código-fonte, testes e instruções próprias em `credit_engine/README.md`. | No repositório |

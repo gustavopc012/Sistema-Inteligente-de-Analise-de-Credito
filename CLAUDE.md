@@ -13,6 +13,7 @@ Siga as instruções de @AGENTS.md em todas as tarefas. Em resumo: não invente 
 ## Tecnologias
 
 - **Em uso:** Elixir, com projeto Mix e testes ExUnit em `credit_engine/`. Sem dependências externas nesta etapa.
+- **Decisão do MVP (17/11):** as tecnologias dos diagramas formam a arquitetura final; o MVP usa Elixir puro com GenServer. Ver `plan.md`, seção 3.
 - **Mencionadas nos diagramas, ainda não aprovadas:** Phoenix, Nx/Bumblebee, XGBoost, DNNs, Redis, PostgreSQL, NGINX, Kubernetes, Isolation Forest e K-Means. Não adicione nenhuma delas como dependência sem aprovação da equipe.
 - **Previsto no quadro da equipe e ainda não adicionado:** Credo.
 
@@ -50,7 +51,8 @@ Combinado da equipe: ao concluir uma tarefa, atualize o `README.md` se a mudanç
 | `README.md` | Visão geral, situação atual e decisões pendentes |
 | `AGENTS.md` | Regras para assistentes de programação |
 | `docs/fluxo-sdd.md` | Fluxo de trabalho e prompts de cada etapa |
-| `spec.md` | Especificação do incremento atual (recebimento e validação de propostas) |
+| `plan.md` | Plano técnico do MVP: escopo, contratos, dados e valores de demonstração |
+| `spec.md` | Especificação do incremento 1 (recebimento e validação de propostas) |
 | `docs/verificacao-incremento-01.md` | Verificação do incremento 1 contra o `spec.md` |
 | `credit_engine/` | Projeto Elixir: código em `lib/`, testes em `test/` |
 | `docs/decisoes-pendentes.md` | Decisões que a equipe ainda precisa aprovar |
@@ -68,7 +70,7 @@ Execute a partir da pasta `credit_engine/`:
 ## Situação atual
 
 - Documentação e diagramas no repositório.
-- Escopo do MVP ainda não definido. O escopo fecha em 19/11.
+- MVP definido em 17/11 no `plan.md`. O escopo fecha em 19/11.
 - Projeto Elixir criado em `credit_engine/`.
 - Primeiro incremento implementado e verificado: recebimento e validação de propostas (`CreditEngine.Proposal`). Resultados em `docs/verificacao-incremento-01.md`. O `spec.md` aguarda aprovação da equipe.
 - Circuit Breaker, limiares de decisão e módulos de ML são esqueletos que retornam `{:error, :not_implemented}` até serem especificados.

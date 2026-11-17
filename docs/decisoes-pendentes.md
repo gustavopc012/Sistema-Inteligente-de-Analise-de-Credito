@@ -4,16 +4,16 @@
 
 Este documento consolida os conflitos, as lacunas e as decisões que precisam de aprovação da equipe. Os itens foram reunidos a partir do `README.md`, do `spec.md`, das seções "Pontos a esclarecer" e "Pontos em aberto" dos diagramas e da verificação do incremento 1.
 
-Nenhum item abaixo é uma decisão aprovada. Cada linha registra apenas a questão, onde ela aparece e o que depende dela.
+Os itens marcados como **decididos** registram a data e onde a decisão está documentada. Os demais continuam em aberto: cada linha registra apenas a questão, onde ela aparece e o que depende dela.
 
 ## 2. Escopo e tecnologias
 
 | ID | Decisão necessária | Origem | Necessária para |
 |---|---|---|---|
-| DP01 | Definir quais casos de uso e etapas do fluxo entram no MVP até 19/11. | Cronograma do monitor; `README.md` | Escrever `plan.md` e `tasks.md` |
-| DP02 | Aprovar as tecnologias complementares do MVP. Os diagramas citam Phoenix, Nx/Bumblebee, XGBoost, DNNs, Redis, PostgreSQL, NGINX e Kubernetes. | `README.md`; `CLAUDE.md`; diagramas de componentes e de implantação | Adicionar qualquer dependência ao projeto |
-| DP03 | Definir os algoritmos: Isolation Forest, K-Means ou DBSCAN para anomalias; XGBoost ou DNNs para o risco, e se são alternativas ou uso simultâneo. | Diagrama de pacotes (item 3); `sequencia.md`; diagrama de componentes (item 9) | Implementar a detecção de anomalias e o motor preditivo |
-| DP04 | Definir quais partes do sistema serão reais, simuladas ou ficarão fora do escopo do protótipo. | `docs/fluxo-sdd.md` (Etapa 0); diagrama de implantação (item 10) | Plano técnico (Etapa 2 do SDD) |
+| DP01 | Definir quais casos de uso e etapas do fluxo entram no MVP até 19/11. **Decidido em 17/11/2026: fluxo completo do diagrama de sequência com dados sintéticos (`plan.md`, seções 1 e 2).** | Cronograma do monitor; `README.md` | Escrever `plan.md` e `tasks.md` |
+| DP02 | Aprovar as tecnologias complementares do MVP. Os diagramas citam Phoenix, Nx/Bumblebee, XGBoost, DNNs, Redis, PostgreSQL, NGINX e Kubernetes. **Decidido em 17/11/2026: os diagramas definem a arquitetura final; o MVP usa Elixir puro com Mix, ExUnit e GenServer (`plan.md`, seção 3).** | `README.md`; `CLAUDE.md`; diagramas de componentes e de implantação | Adicionar qualquer dependência ao projeto |
+| DP03 | Definir os algoritmos: Isolation Forest, K-Means ou DBSCAN para anomalias; XGBoost ou DNNs para o risco, e se são alternativas ou uso simultâneo. **Decidido para o MVP em 17/11/2026: distância euclidiana e fórmula logística. Os algoritmos de produção continuam em aberto (`plan.md`, seção 3).** | Diagrama de pacotes (item 3); `sequencia.md`; diagrama de componentes (item 9) | Implementar a detecção de anomalias e o motor preditivo |
+| DP04 | Definir quais partes do sistema serão reais, simuladas ou ficarão fora do escopo do protótipo. **Decidido em 17/11/2026 (`plan.md`, seções 2 e 3).** | `docs/fluxo-sdd.md` (Etapa 0); diagrama de implantação (item 10) | Plano técnico (Etapa 2 do SDD) |
 
 ## 3. Dados da proposta
 
@@ -29,17 +29,17 @@ Nenhum item abaixo é uma decisão aprovada. Cada linha registra apenas a quest�
 
 | ID | Decisão necessária | Origem | Necessária para |
 |---|---|---|---|
-| DP10 | Definir o indicador macroeconômico, o limite de inadimplência, as condições de acionamento e o procedimento de recuperação do Circuit Breaker, e de onde vêm esses dados. | `README.md`; diagrama de pacotes (item 2); diagrama de casos de uso (item 4); `sequencia.md`; diagrama de componentes (item 5) | Implementar o Circuit Breaker |
-| DP11 | Definir o limiar de distância que caracteriza fraude e o que acontece com a proposta em quarentena (apenas recusa ou fila de revisão). | `sequencia.md`; `README.md` | Implementar a detecção de fraude |
-| DP12 | Definir as faixas de score que separam Aprovado, Condicional e Recusado e como a matriz de confusão será usada na calibração. O diagrama de sequência mostra apenas o exemplo `0,15`. | Diagrama de casos de uso (itens 2 e 3); diagrama de pacotes (item 4); `sequencia.md`; diagrama de classes (itens 8 e 10) | Implementar os limiares de decisão |
+| DP10 | Definir o indicador macroeconômico, o limite de inadimplência, as condições de acionamento e o procedimento de recuperação do Circuit Breaker, e de onde vêm esses dados. **Decidido para o MVP em 17/11/2026: campo `taxa_inadimplencia_mercado` com limite de demonstração 0,08. Recuperação do Circuit Breaker continua em aberto (`plan.md`, seções 6 e 7).** | `README.md`; diagrama de pacotes (item 2); diagrama de casos de uso (item 4); `sequencia.md`; diagrama de componentes (item 5) | Implementar o Circuit Breaker |
+| DP11 | Definir o limiar de distância que caracteriza fraude e o que acontece com a proposta em quarentena (apenas recusa ou fila de revisão). **Decidido para o MVP em 17/11/2026: distância máxima de demonstração 3,0; a quarentena é apenas recusa de segurança, sem fila de revisão (`plan.md`, seções 5 e 7).** | `sequencia.md`; `README.md` | Implementar a detecção de fraude |
+| DP12 | Definir as faixas de score que separam Aprovado, Condicional e Recusado e como a matriz de confusão será usada na calibração. O diagrama de sequência mostra apenas o exemplo `0,15`. **Decidido para o MVP em 17/11/2026: abaixo de 0,30 aprovado, de 0,30 a 0,60 análise manual, acima de 0,60 recusado. A calibração por matriz de confusão continua em aberto (`plan.md`, seção 7).** | Diagrama de casos de uso (itens 2 e 3); diagrama de pacotes (item 4); `sequencia.md`; diagrama de classes (itens 8 e 10) | Implementar os limiares de decisão |
 | DP13 | Definir quando uma proposta vai para análise humana (score indefinido) e como a decisão do analista é registrada. | Diagrama de casos de uso (item 2); diagrama de componentes (item 6) | Fluxo de análise condicional |
-| DP14 | Definir o formato do parecer (texto livre ou estruturado), como os valores SHAP serão produzidos e traduzidos e como a equidade (*fairness*) será avaliada. | Diagrama de pacotes (item 5); `sequencia.md` | Implementar o parecer explicável |
+| DP14 | Definir o formato do parecer (texto livre ou estruturado), como os valores SHAP serão produzidos e traduzidos e como a equidade (*fairness*) será avaliada. **Decidido para o MVP em 17/11/2026: parecer estruturado com fatores positivos e negativos (peso × valor). *Fairness* continua em aberto (`plan.md`, seção 5).** | Diagrama de pacotes (item 5); `sequencia.md` | Implementar o parecer explicável |
 
 ## 5. Arquitetura e integração
 
 | ID | Decisão necessária | Origem | Necessária para |
 |---|---|---|---|
-| DP15 | Definir os contratos de comunicação entre os componentes (entradas, saídas e erros de cada etapa). | `README.md`; diagrama de componentes (portas) | Integrar as etapas do fluxo |
+| DP15 | Definir os contratos de comunicação entre os componentes (entradas, saídas e erros de cada etapa). **Decidido em 17/11/2026 (`plan.md`, seção 5).** | `README.md`; diagrama de componentes (portas) | Integrar as etapas do fluxo |
 | DP16 | Definir a estratégia para falhas: indisponibilidade de fontes, dados ausentes e tempo limite de um componente. | `sequencia.md`; `README.md` | Tratamento de erros no fluxo completo |
 | DP17 | Resolver as diferenças entre diagramas: limiares e Monitor de Estabilidade ausentes no diagrama de componentes; nomes de camadas diferentes entre pacotes e componentes; camada de Aplicação sem lugar no diagrama de implantação; acesso dos workers ao perfil do cliente. | Diagrama de componentes (itens 2, 3 e 8); diagrama de implantação (itens 4 e 5) | Manter os diagramas coerentes com o código |
 | DP18 | Definir como o *data drift* e o PSI serão calculados, o que dispara o retreinamento e o significado da conexão assíncrona entre o monitor e o motor preditivo. | Diagrama de casos de uso (item 6); diagrama de pacotes (item 6) | Monitoramento dos modelos |
