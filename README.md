@@ -6,7 +6,7 @@ O **Sistema Inteligente de Análise de Crédito** tem como objetivo apoiar a ava
 
 **Linguagem de programação:** Elixir.
 
-> **Status do projeto:** planejamento e documentação em consolidação, com início da implementação incremental. Algumas regras de negócio, parâmetros dos modelos e decisões complementares de arquitetura ainda dependem de definição e aprovação da equipe.
+> **Status do projeto:** MVP definido em 17/11/2026 (`plan.md`) e em implementação (`tasks.md`). O incremento 1 (recebimento e validação de propostas) está concluído e verificado, e a configuração dos valores de demonstração (T0) está pronta. O escopo fecha em 19/11/2026.
 
 ## Objetivos
 
@@ -53,12 +53,13 @@ Essas funcionalidades representam o escopo planejado; não significam que já es
 
 - **Elixir:** linguagem de programação do projeto.
 - **Mix e ExUnit:** estrutura do projeto e testes automatizados, em uso na pasta `credit_engine/`. O projeto não possui dependências externas nesta etapa.
+- **GenServer (OTP):** previsto para o Circuit Breaker (tarefa T2).
 
-### Tecnologias e ferramentas previstas nos diagramas
+### Tecnologias da arquitetura final (diagramas)
 
 Os documentos de arquitetura também mencionam Phoenix, NX/Bumblebee, XGBoost, Redis, PostgreSQL, NGINX e Kubernetes, além de alternativas de algoritmos como Isolation Forest e K-Means.
 
-A presença dessas tecnologias nos diagramas registra o planejamento atual, mas não significa que todas já estejam confirmadas para a implementação. A equipe deverá documentar as escolhas complementares e eventuais alternativas antes de utilizá-las no projeto.
+Essas tecnologias formam a arquitetura final do sistema. Para o MVP, a equipe decidiu em 17/11/2026 implementar o núcleo em Elixir puro (Mix, ExUnit e GenServer), mantendo cada etapa em um módulo próprio, que é o ponto em que a tecnologia de produção seria conectada. A correspondência entre cada componente do diagrama e o que entra no MVP está no `plan.md`, seção 3.
 
 ## Estrutura da documentação
 
@@ -110,19 +111,20 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 
 ## Situação atual e decisões pendentes
 
-A documentação permite iniciar atividades preparatórias e incrementos técnicos bem delimitados, como a estrutura inicial do projeto Elixir, a configuração do ambiente de testes, a organização dos módulos e o uso de dados sintéticos.
+**Concluído:**
 
-Antes de implementar decisões definitivas de crédito, fraude ou risco sistêmico, a equipe precisa formalizar, entre outros pontos:
+- Documentação, diagramas e fluxo SDD no repositório.
+- Incremento 1: recebimento e validação de propostas (`spec.md`), com verificação em `docs/verificacao-incremento-01.md`.
+- Definição do MVP (`plan.md`) e divisão em tarefas (`tasks.md`).
+- T0: configuração dos valores de demonstração (`credit_engine/config/config.exs`).
 
-- Os estados possíveis de uma proposta e o significado de cada um.
-- Os modelos e algoritmos que serão efetivamente utilizados.
-- Os critérios e limiares de aprovação, recusa e análise manual.
-- As condições de acionamento e recuperação do Circuit Breaker.
-- O tratamento de propostas suspeitas, dados ausentes e falhas nas fontes.
-- Os contratos de comunicação entre componentes.
-- As tecnologias complementares e os critérios de monitoramento e retreinamento.
+**Em andamento:** tarefas T2 a T9 do `tasks.md`: Circuit Breaker, detecção de anomalias, score de risco, limiares, parecer explicável, pipeline, cenários de ponta a ponta e verificação final.
 
-A relação consolidada está em `docs/decisoes-pendentes.md`. Nenhum valor de score, limite ou regra de decisão deve ser considerado definitivo sem aprovação da equipe.
+**Decidido para o MVP em 17/11/2026:** escopo, tecnologias, contratos entre as etapas, formato do parecer e valores de demonstração do Circuit Breaker, das anomalias, do score e dos limiares. Os valores servem para a demonstração e não estão calibrados com dados reais.
+
+**Ainda em aberto:** entre outros pontos, a recuperação do Circuit Breaker, a calibração dos limiares, os algoritmos de produção, o monitoramento e o retreinamento dos modelos, a avaliação de equidade e a persistência das propostas.
+
+A relação completa, com o que foi decidido e o que continua em aberto, está em `docs/decisoes-pendentes.md`. Nenhum valor ou regra de decisão além do que está registrado ali e no `plan.md` deve ser considerado definitivo.
 
 ## Diretrizes do projeto
 
