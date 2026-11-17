@@ -12,7 +12,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 
 | Tarefa | Descrição | Depende de | Responsável | Situação |
 |---|---|---|---|---|
-| T0 | Configuração dos valores de demonstração | — | | A fazer |
+| T0 | Configuração dos valores de demonstração | — | Alan | Concluída |
 | T1 | Recebimento e validação da proposta | — | Gustavo | Concluída |
 | T2 | Circuit Breaker | T0 | | A fazer |
 | T3 | Detecção de anomalias | T0 | | A fazer |
@@ -41,6 +41,17 @@ Regras para todas as tarefas:
 **Testes:** `mix test` continua passando.
 
 **Concluída quando:** o arquivo existe com o limite do Circuit Breaker, o centro e a distância máxima das anomalias, os pesos do score e os dois limiares, e cada valor pode ser lido com `Application.fetch_env!/2`.
+
+**Situação:** concluída em 17/11/2026. Chaves disponíveis:
+
+| Chave | Valores |
+|---|---|
+| `:circuit_breaker` | `limite_taxa_inadimplencia` |
+| `:anomalias` | `centro` (mapa com os três campos), `distancia_maxima` |
+| `:score` | `intercepto`, `pesos` (mapa com os três campos) |
+| `:limiares` | `aprovado_abaixo_de`, `recusado_acima_de` |
+
+Exemplo de leitura: `Application.fetch_env!(:credit_engine, :score)[:pesos]`. Testes em `test/credit_engine/config_test.exs`.
 
 ---
 

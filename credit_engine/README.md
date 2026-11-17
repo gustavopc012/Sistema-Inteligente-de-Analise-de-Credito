@@ -38,6 +38,8 @@ credit_engine/
 │       ├── ml/supervised.ex
 │       ├── ml/unsupervised.ex
 │       └── decision/thresholds.ex
+├── config/
+│   └── config.exs        # valores de demonstração do MVP (plan.md, seção 7)
 ├── test/
 │   ├── test_helper.exs
 │   └── credit_engine_test.exs
