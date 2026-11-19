@@ -14,7 +14,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 |---|---|---|---|---|
 | T0 | Configuração dos valores de demonstração | — | Alan | Concluída |
 | T1 | Recebimento e validação da proposta | — | Gustavo | Concluída |
-| T2 | Circuit Breaker | T0 | | A fazer |
+| T2 | Circuit Breaker | T0 | Paulo | Concluída |
 | T3 | Detecção de anomalias | T0 | | A fazer |
 | T4 | Score de risco | T0 | | A fazer |
 | T5 | Limiares de decisão | T0 | | A fazer |
@@ -29,7 +29,7 @@ Regras para todas as tarefas:
 - Testes usam os valores de `config/config.exs`, nunca números soltos.
 - Dados de teste sempre sintéticos.
 - Ao concluir, atualizar a situação nesta tabela e, se necessário, o `README.md`.
-
+**Complementado em 19/11/2026 (T2): taxa igual ao limite não bloqueia; `macroeconomic_data` ausente ou campo `nil` devolve `{:dado_ausente, :taxa_inadimplencia_mercado}`; valor não numérico ou fora de 0 a 1 devolve `{:dado_invalido, :taxa_inadimplencia_mercado}` e não conta como bloqueio (`tasks.md`, T2).**
 ---
 
 ## T0 — Configuração dos valores de demonstração
@@ -77,6 +77,7 @@ Exemplo de leitura: `Application.fetch_env!(:credit_engine, :score)[:pesos]`. Te
 - campo ausente: `{:error, {:dado_ausente, :taxa_inadimplencia_mercado}}`;
 - valor não numérico: `{:error, {:dado_invalido, :taxa_inadimplencia_mercado}}`;
 - `status/0` conta os bloqueios.
+- taxa fora de 0 a 1: {:error, {:dado_invalido, :taxa_inadimplencia_mercado}};
 
 **Concluída quando:** os testes passam e o processo aparece sob o supervisor da aplicação.
 
