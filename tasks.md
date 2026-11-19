@@ -18,7 +18,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T3 | Detecção de anomalias | T0 | Alan | Concluída |
 | T4 | Score de risco | T0 | Alan | Concluída |
 | T5 | Limiares de decisão | T0 | Alan | Concluída |
-| T6 | Parecer explicável | T0 | | A fazer |
+| T6 | Parecer explicável | T0 | Alan | Concluída |
 | T7 | Pipeline completo | T2 a T6 | | A fazer |
 | T8 | Cenários de ponta a ponta e demonstração | T7 | | A fazer |
 | T9 | Verificação e documentação final | T8 | | A fazer |
@@ -170,6 +170,10 @@ Também foi exposta a função `contribuicoes(proposal)`, que devolve `{:ok, %{c
 - as listas estão ordenadas pelo impacto.
 
 **Concluída quando:** os testes passam.
+
+**Situação:** concluída em 19/11/2026, com 9 testes em `test/credit_engine/compliance/xai_test.exs`.
+
+**Complementado em 19/11/2026 (T6):** campo com contribuição zero (por exemplo, nenhum atraso) não muda o risco e não entra em nenhuma das listas. Erros dos campos são os mesmos do score (`dado_ausente`/`dado_invalido`), e probabilidade fora de 0 a 1 ou não numérica devolve `{:error, {:dado_invalido, :probabilidade}}`.
 
 ---
 
