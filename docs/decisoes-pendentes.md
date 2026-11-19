@@ -19,7 +19,7 @@ Os itens marcados como **decididos** registram a data e onde a decisão está do
 
 | ID | Decisão necessária | Origem | Necessária para |
 |---|---|---|---|
-| DP05 | Definir a estrutura interna e as validações de cada mapa complementar (`applicant_data`, `open_finance_data`, `behavioral_data`, `macroeconomic_data`). | `spec.md` (seção 8); diagrama de classes | Qualquer etapa que leia esses dados |
+| DP05 | Definir a estrutura interna e as validações de cada mapa complementar (`applicant_data`, `open_finance_data`, `behavioral_data`, `macroeconomic_data`). **Complementado em 19/11/2026 (T4), para os campos do score:** `comprometimento_renda` precisa estar entre 0 e 1; `atrasos_12m` e `tempo_relacionamento_anos` precisam ser números maiores ou iguais a 0. Mapa ausente, campo ausente ou `nil` devolve `{:dado_ausente, campo}`; valor fora dessas regras devolve `{:dado_invalido, campo}`. (`tasks.md`, T4). | `spec.md` (seção 8); diagrama de classes | Qualquer etapa que leia esses dados |
 | DP06 | Identificar quais dados virão das fontes Open Finance e como serão tratados. | Diagrama de casos de uso (item 5); diagrama de pacotes (item 7); `spec.md` | Ingestão de dados |
 | DP07 | Definir o formato e a regra de unicidade do identificador da proposta. | `spec.md` (seção 8) | Persistência das propostas |
 | DP08 | Definir o comportamento quando a entrada traz o mesmo campo como átomo e como texto (por exemplo, `:id` e `"id"`). | `docs/verificacao-incremento-01.md` (item 3) | Revisão do `spec.md` |

@@ -74,6 +74,6 @@ Execute a partir da pasta `credit_engine/`:
 - MVP definido em 17/11 no `plan.md`, com as tarefas em `tasks.md`. O escopo fecha em 19/11.
 - Projeto Elixir criado em `credit_engine/`.
 - Primeiro incremento implementado e verificado: recebimento e validação de propostas (`CreditEngine.Proposal`). Resultados em `docs/verificacao-incremento-01.md`. O `spec.md` aguarda aprovação da equipe.
-- Limiares de decisão e módulos de ML são esqueletos que retornam `{:error, :not_implemented}` até serem especificados.
-- Circuit Breaker está implementado
+- Limiares de decisão e detecção de anomalias são esqueletos que retornam `{:error, :not_implemented}` até serem implementados.
+- Circuit Breaker (T2) e score de risco (T4) estão implementados.
 - Decisões em aberto consolidadas em `docs/decisoes-pendentes.md`.

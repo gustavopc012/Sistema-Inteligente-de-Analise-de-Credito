@@ -16,7 +16,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T1 | Recebimento e validação da proposta | — | Gustavo | Concluída |
 | T2 | Circuit Breaker | T0 | Paulo | Concluída |
 | T3 | Detecção de anomalias | T0 | | A fazer |
-| T4 | Score de risco | T0 | | A fazer |
+| T4 | Score de risco | T0 | Alan | Concluída |
 | T5 | Limiares de decisão | T0 | | A fazer |
 | T6 | Parecer explicável | T0 | | A fazer |
 | T7 | Pipeline completo | T2 a T6 | | A fazer |
@@ -118,6 +118,12 @@ Exemplo de leitura: `Application.fetch_env!(:credit_engine, :score)[:pesos]`. Te
 - campo ausente ou não numérico: erro de dado ausente ou inválido.
 
 **Concluída quando:** os testes passam.
+
+**Situação:** concluída em 19/11/2026, com 14 testes em `test/credit_engine/ml/supervised_test.exs`.
+
+**Complementado em 19/11/2026 (T4):** `comprometimento_renda` precisa estar entre 0 e 1; `atrasos_12m` e `tempo_relacionamento_anos` precisam ser números maiores ou iguais a 0. Mapa ausente, campo ausente ou `nil` devolve `{:dado_ausente, campo}`; valor fora dessas regras devolve `{:dado_invalido, campo}`.
+
+Também foi exposta a função `contribuicoes(proposal)`, que devolve `{:ok, %{campo => peso × valor}}` com a mesma conta do score. A T6 pode usá-la para montar o parecer sem repetir a leitura e a validação dos campos.
 
 ---
 
