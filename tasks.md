@@ -17,7 +17,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T2 | Circuit Breaker | T0 | Paulo | Concluída |
 | T3 | Detecção de anomalias | T0 | Alan | Concluída |
 | T4 | Score de risco | T0 | Alan | Concluída |
-| T5 | Limiares de decisão | T0 | | A fazer |
+| T5 | Limiares de decisão | T0 | Alan | Concluída |
 | T6 | Parecer explicável | T0 | | A fazer |
 | T7 | Pipeline completo | T2 a T6 | | A fazer |
 | T8 | Cenários de ponta a ponta e demonstração | T7 | | A fazer |
@@ -147,6 +147,10 @@ Também foi exposta a função `contribuicoes(proposal)`, que devolve `{:ok, %{c
 - valor fora de 0 a 1 ou não numérico: `{:error, {:dado_invalido, :probabilidade}}`.
 
 **Concluída quando:** os testes passam.
+
+**Situação:** concluída em 19/11/2026, com 10 testes em `test/credit_engine/decision/thresholds_test.exs`. Com a T4, os três perfis de exemplo do `plan.md` resultam em aprovado, análise manual e recusado.
+
+**Complementado em 19/11/2026 (T5):** valores exatamente iguais aos limiares (0,30 e 0,60) vão para análise manual; 0 e 1 são aceitos. Probabilidade fora de 0 a 1, não numérica ou `nil` devolve `{:error, {:dado_invalido, :probabilidade}}`.
 
 ---
 
