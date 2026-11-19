@@ -10,9 +10,4 @@ defmodule CreditEngineTest do
     assert proposal.id == "proposal-test-001"
     assert proposal.applicant_data == nil
   end
-
-  test "Circuit Breaker permanece explicitamente não implementado" do
-    assert CreditEngine.Safety.CircuitBreaker.evaluate(%{}) ==
-             {:error, :not_implemented}
-  end
 end

@@ -4,7 +4,10 @@ defmodule CreditEngine.Application do
 
   @impl true
   def start(_type, _args) do
-    children = []
+    children = [
+      CreditEngine.Safety.CircuitBreaker
+    ]
+
     Supervisor.start_link(children, strategy: :one_for_one, name: CreditEngine.Supervisor)
   end
 end

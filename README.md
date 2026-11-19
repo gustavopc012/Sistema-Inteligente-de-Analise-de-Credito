@@ -117,8 +117,9 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 - Incremento 1: recebimento e validação de propostas (`spec.md`), com verificação em `docs/verificacao-incremento-01.md`.
 - Definição do MVP (`plan.md`) e divisão em tarefas (`tasks.md`).
 - T0: configuração dos valores de demonstração (`credit_engine/config/config.exs`).
+- T2: Concluída
 
-**Em andamento:** tarefas T2 a T9 do `tasks.md`: Circuit Breaker, detecção de anomalias, score de risco, limiares, parecer explicável, pipeline, cenários de ponta a ponta e verificação final.
+**Em andamento:** tarefas T3 a T9 do `tasks.md`: Detecção de anomalias, score de risco, limiares, parecer explicável, pipeline, cenários de ponta a ponta e verificação final.
 
 **Decidido para o MVP em 17/11/2026:** escopo, tecnologias, contratos entre as etapas, formato do parecer e valores de demonstração do Circuit Breaker, das anomalias, do score e dos limiares. Os valores servem para a demonstração e não estão calibrados com dados reais.
 
