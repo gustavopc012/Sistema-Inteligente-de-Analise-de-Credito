@@ -15,7 +15,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T0 | Configuração dos valores de demonstração | — | Alan | Concluída |
 | T1 | Recebimento e validação da proposta | — | Gustavo | Concluída |
 | T2 | Circuit Breaker | T0 | Paulo | Concluída |
-| T3 | Detecção de anomalias | T0 | | A fazer |
+| T3 | Detecção de anomalias | T0 | Alan | Concluída |
 | T4 | Score de risco | T0 | Alan | Concluída |
 | T5 | Limiares de decisão | T0 | | A fazer |
 | T6 | Parecer explicável | T0 | | A fazer |
@@ -99,6 +99,12 @@ Exemplo de leitura: `Application.fetch_env!(:credit_engine, :score)[:pesos]`. Te
 - campo ausente ou não numérico: erro de dado ausente ou inválido.
 
 **Concluída quando:** os testes passam.
+
+**Situação:** concluída em 19/11/2026, com 11 testes em `test/credit_engine/ml/unsupervised_test.exs`.
+
+**Complementado em 19/11/2026 (T3):** distância igual à máxima não é anomalia; os três campos de `behavioral_data` precisam ser números maiores ou iguais a 0. Mapa ausente, campo ausente ou `nil` devolve `{:dado_ausente, campo}`; valor não numérico ou negativo devolve `{:dado_invalido, campo}`.
+
+Também foi exposta a função `distancia(proposal)`, que devolve `{:ok, distancia}` e pode ser usada na demonstração para mostrar o quanto o comportamento se afastou do centro.
 
 ---
 
