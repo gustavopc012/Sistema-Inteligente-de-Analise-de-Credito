@@ -6,7 +6,7 @@ O **Sistema Inteligente de Análise de Crédito** tem como objetivo apoiar a ava
 
 **Linguagem de programação:** Elixir.
 
-> **Status do projeto:** MVP concluído e verificado em 19/11/2026 (`docs/verificacao-mvp.md`), com 92 testes e nenhuma falha. Os cinco cenários do `plan.md` funcionam de ponta a ponta e podem ser demonstrados pelo `iex` (`credit_engine/README.md`). O escopo está fechado; a partir de agora, apenas correções.
+> **Status do projeto:** MVP concluído e verificado em 19/11/2026 (`docs/verificacao-mvp.md`). Os cinco cenários do `plan.md` funcionam de ponta a ponta e podem ser demonstrados pelo `iex` ou por uma interface web, adicionada em 20/11/2026 (`credit_engine/README.md`). São 108 testes, sem falhas.
 
 ## Objetivos
 
@@ -126,6 +126,7 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 - T7: pipeline completo (`CreditEngine.analisar/1`).
 - T8: cinco cenários de ponta a ponta e demonstração pelo `iex` (comandos em `credit_engine/README.md`).
 - T9: verificação final do MVP (`docs/verificacao-mvp.md`).
+- T10: interface web de demonstração (`mix credit_engine.web`, em http://localhost:4000). Detalhes no `plan.md`, seção 13.
 
 **Próximas etapas (`plan.md`, seção 11):** correções e roteiro da demonstração (21 e 22/11), ensaio (23/11) e evento final (24/11).
 

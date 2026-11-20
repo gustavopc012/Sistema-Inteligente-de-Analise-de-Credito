@@ -22,6 +22,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T7 | Pipeline completo | T2 a T6 | Alan | Concluída |
 | T8 | Cenários de ponta a ponta e demonstração | T7 | Alan | Concluída |
 | T9 | Verificação e documentação final | T8 | Alan | Concluída |
+| T10 | Interface web de demonstração | T7 | Alan | Concluída |
 
 Regras para todas as tarefas:
 
@@ -220,3 +221,20 @@ Também foi exposta a função `contribuicoes(proposal)`, que devolve `{:ok, %{c
 **Concluída quando:** existe a tabela requisito, evidência e resultado, com os resultados reais de `mix test`, e os documentos refletem o que foi entregue.
 
 **Situação:** concluída em 19/11/2026. Resultado em `docs/verificacao-mvp.md`: 92 testes, 0 falhas, e o MVP atende ao critério de pronto da seção 8 do `plan.md`. Um item ficou atendido em parte (números fixos em alguns testes), e as limitações estão na seção 11 do documento.
+
+---
+
+## T10 — Interface web de demonstração
+
+**Objetivo:** permitir demonstrar o MVP pelo navegador, além do `iex`.
+
+**Arquivos:** `lib/credit_engine/web.ex`, `lib/credit_engine/web/` (`api.ex`, `handler.ex`, `json.ex`), `lib/mix/tasks/credit_engine.web.ex`, `priv/static/index.html`, `test/credit_engine/web_test.exs`, `test/credit_engine/web/` (`api_test.exs`, `json_test.exs`). No `mix.exs`, a aplicação `:inets` entra em `extra_applications`.
+
+**Contrato:** `GET /` devolve a página; `GET /api/analisar?<campos>` devolve a decisão em JSON (200) ou o erro de entrada (422); `GET /api/status` devolve o estado do Circuit Breaker e os parâmetros da configuração.
+
+**Implementação:** servidor `:httpd` do Erlang/OTP, só em `127.0.0.1`, sem dependências externas. A API converte os campos do formulário e chama `CreditEngine.analisar/1`; toda decisão vem do pipeline. Campo vazio vira `nil` (dado ausente), número aceita vírgula ou ponto, e outro texto é repassado como está (dado inválido). A página tem botões para os cinco cenários do `credit_engine/README.md` e mostra as etapas executadas, a decisão, a régua do score, o parecer e o retorno em Elixir.
+
+**Concluída quando:** os testes passam e os cinco cenários aparecem corretamente no navegador.
+
+**Situação:** concluída em 20/11/2026, com 16 testes novos (108 no total, 0 falhas). As telas dos cinco cenários e de uma entrada inválida foram conferidas em um navegador (Chromium), em largura de computador e de celular.
+

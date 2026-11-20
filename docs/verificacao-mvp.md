@@ -131,7 +131,7 @@ Perfis de exemplo, executados pelo pipeline:
 | T0 a T8 | Concluídas | `tasks.md` e seções 3 a 9 deste documento |
 | T9 | Concluída | Este documento |
 
-O cronograma do `plan.md` previa T7 e T8 para 18/11. As duas foram concluídas em 19/11, dentro do prazo de fechamento do escopo.
+O cronograma do `plan.md` previa T7 e T8 para 18/11. As duas foram concluídas em 19/11.
 
 ## 11. Pendências e limitações
 
@@ -147,9 +147,19 @@ O cronograma do `plan.md` previa T7 e T8 para 18/11. As duas foram concluídas e
 
 ## 12. Conclusão
 
-Os cinco cenários do critério de pronto passam em testes de ponta a ponta e podem ser demonstrados pelo `iex`, e os contratos e os valores do `plan.md` conferem com o código. **O MVP atende ao critério de pronto da seção 8 do `plan.md`.** O único item atendido em parte é o uso de números fixos em alguns testes (seção 8), que não afeta o funcionamento. A partir de agora, o escopo está fechado e entram apenas correções.
+Os cinco cenários do critério de pronto passam em testes de ponta a ponta e podem ser demonstrados pelo `iex`, e os contratos e os valores do `plan.md` conferem com o código. **O MVP atende ao critério de pronto da seção 8 do `plan.md`.** O único item atendido em parte é o uso de números fixos em alguns testes (seção 8), que não afeta o funcionamento.
 
-## 13. Referências
+## 13. Complemento de 20/11/2026: interface web
+
+Depois desta verificação, a equipe adicionou a interface web de demonstração (T10), descrita no `plan.md`, seção 13. A interface não altera o pipeline: só converte os campos do formulário e chama `CreditEngine.analisar/1`.
+
+| Verificação | Resultado |
+|---|---|
+| `mix test` | 108 testes, 0 falhas (92 anteriores + 16 da interface), também com as seeds 0 a 5 |
+| Testes da interface | Decisão da API igual à de `CreditEngine.analisar/1`; etapas executadas em cada tipo de recusa; erros 422 com o campo; rotas `/`, `/api/analisar`, `/api/status` e 404 por HTTP; servidor só em `127.0.0.1` |
+| Navegador (Chromium) | Cinco cenários e uma entrada inválida conferidos em largura de computador e de celular |
+
+## 14. Referências
 
 - `plan.md`, seções 2 a 9.
 - `tasks.md`, tarefas T0 a T9.

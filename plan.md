@@ -33,7 +33,7 @@ O foco é mostrar os conceitos de CLP em Elixir (subprogramas, structs, pattern 
 
 ### 2.2. Fora do MVP
 
-- API web (Phoenix) e interface do analista. A análise manual aparece apenas como status.
+- API web (Phoenix) e interface do analista. A análise manual aparece apenas como status. *Em 20/11/2026 foi adicionada uma interface web de demonstração, sem Phoenix (seção 13).*
 - Bancos de dados (Redis e PostgreSQL) e persistência das propostas.
 - Modelos treinados (XGBoost, DNNs, Isolation Forest, K-Means) e Nx/Bumblebee.
 - NGINX, Kubernetes e implantação em nuvem.
@@ -48,7 +48,7 @@ As tecnologias dos diagramas formam a **arquitetura final** do sistema. O MVP im
 
 | Componente do diagrama | Tecnologia final (diagramas) | No MVP |
 |---|---|---|
-| Interface / API | Phoenix | Funções Elixir chamadas pelo `iex` |
+| Interface / API | Phoenix | Funções Elixir chamadas pelo `iex` e, desde 20/11/2026, interface web de demonstração com o `:httpd` do Erlang/OTP (seção 13) |
 | Feature Store | Redis | Dados dentro da própria proposta |
 | Auditoria XAI | PostgreSQL | Parecer devolvido na decisão, sem persistência |
 | Circuit Breaker | — | GenServer supervisionado pela `CreditEngine.Application` |
@@ -171,3 +171,11 @@ O MVP está pronto quando os cinco cenários abaixo, do `docs/diagramas/sequenci
 | `docs/diagramas/diagrama-de-componentes.md` | Separação por etapas e portas |
 | `docs/decisoes-pendentes.md` | DP01, DP02, DP03, DP04, DP10, DP11, DP12, DP14 e DP15 |
 | `spec.md` | Incremento 1, base da proposta validada |
+
+## 13. Interface web de demonstração (T10)
+
+Adicionada em 20/11/2026 para deixar a apresentação mais visual. A demonstração pelo `iex` continua valendo.
+
+- **O que faz:** uma página web recebe a proposta, chama `CreditEngine.analisar/1` e mostra as etapas do pipeline, a decisão, o score e o parecer.
+- **Como:** sem Phoenix nem dependência externa. O servidor é o `:httpd`, que já vem com o Erlang/OTP (aplicação `:inets`), e aceita conexões apenas do próprio computador.
+- **O que não muda:** nenhuma regra de negócio, contrato ou valor de demonstração. A interface só chama o pipeline. O restante da seção 2.2 continua fora do MVP, inclusive a interface do analista e a persistência.
