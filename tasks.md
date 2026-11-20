@@ -20,7 +20,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T5 | Limiares de decisão | T0 | Alan | Concluída |
 | T6 | Parecer explicável | T0 | Alan | Concluída |
 | T7 | Pipeline completo | T2 a T6 | Alan | Concluída |
-| T8 | Cenários de ponta a ponta e demonstração | T7 | | A fazer |
+| T8 | Cenários de ponta a ponta e demonstração | T7 | Alan | Concluída |
 | T9 | Verificação e documentação final | T8 | | A fazer |
 
 Regras para todas as tarefas:
@@ -206,6 +206,8 @@ Também foi exposta a função `contribuicoes(proposal)`, que devolve `{:ok, %{c
 **Testes:** os cinco cenários do `sequencia.md`: recusa automática, recusa de segurança, aprovado, recusado e análise manual.
 
 **Concluída quando:** os cinco cenários passam e o `credit_engine/README.md` traz os comandos de `iex` para demonstrar cada um.
+
+**Situação:** concluída em 19/11/2026. Os cinco cenários estão em `test/credit_engine/cenarios_test.exs`, um teste por cenário, com os parâmetros lidos da configuração. Nos cenários de recusa, o teste também confirma que as etapas seguintes não rodam: sem os dados que elas usam, a decisão é a mesma. O `credit_engine/README.md` traz a seção de demonstração, com os comandos de `iex` e as saídas reais de cada cenário, e foi atualizado para o estado atual do projeto.
 
 ---
 
