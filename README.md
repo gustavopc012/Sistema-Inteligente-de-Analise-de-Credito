@@ -133,7 +133,7 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 
 **Decidido para o MVP em 17/11/2026:** escopo, tecnologias, contratos entre as etapas, formato do parecer e valores de demonstração do Circuit Breaker, das anomalias, do score e dos limiares. Os valores servem para a demonstração e não estão calibrados com dados reais.
 
-**Ainda em aberto:** entre outros pontos, a recuperação do Circuit Breaker, a calibração dos limiares, os algoritmos de produção, o monitoramento e o retreinamento dos modelos, a avaliação de equidade e a persistência das propostas.
+**Ainda em aberto:** detalhes das fontes e dados do Open Finance; comportamento de campos duplicados como átomo e texto; identificação, estados e persistência das propostas; algoritmos de produção; recuperação do Circuit Breaker e calibração dos limiares; análise humana e registro das decisões; equidade (*fairness*); estratégia de falhas; resolução das divergências entre diagramas; monitoramento, *data drift*, PSI, retreinamento dos modelos e comunicação assíncrona; metas de desempenho; padronização da nomenclatura e correções dos diagramas; aprovação formal da especificação do incremento 1 e adoção do Credo.
 
 A relação completa, com o que foi decidido e o que continua em aberto, está em `docs/decisoes-pendentes.md`. Nenhum valor ou regra de decisão além do que está registrado ali e no `plan.md` deve ser considerado definitivo.
 
