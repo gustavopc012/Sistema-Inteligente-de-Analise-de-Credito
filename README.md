@@ -6,7 +6,7 @@ O **Sistema Inteligente de Análise de Crédito** tem como objetivo apoiar a ava
 
 **Linguagem de programação:** Elixir.
 
-> **Status do projeto:** MVP definido em 17/11/2026 (`plan.md`) e em implementação (`tasks.md`). O incremento 1 (recebimento e validação de propostas) está concluído e verificado, e a configuração dos valores de demonstração (T0) está pronta. O escopo fecha em 19/11/2026.
+> **Status do projeto:** MVP concluído e verificado em 19/11/2026 (`docs/verificacao-mvp.md`), com 92 testes e nenhuma falha. Os cinco cenários do `plan.md` funcionam de ponta a ponta e podem ser demonstrados pelo `iex` (`credit_engine/README.md`). O escopo está fechado; a partir de agora, apenas correções.
 
 ## Objetivos
 
@@ -81,6 +81,7 @@ Os documentos de planejamento e arquitetura são mantidos junto ao código-fonte
 | `tasks.md` | Tarefas do MVP, com dependências, testes, critérios de conclusão e responsáveis. | No repositório |
 | `spec.md` | Especificação do incremento "Recebimento e validação de propostas". | No repositório (aguardando aprovação) |
 | `docs/verificacao-incremento-01.md` | Verificação do incremento 1 contra os critérios de aceitação do `spec.md`. | No repositório |
+| `docs/verificacao-mvp.md` | Verificação do MVP contra o `plan.md`: requisito, evidência e resultado. | No repositório |
 | `credit_engine/` | Projeto Elixir (Mix), com código-fonte, testes e instruções próprias em `credit_engine/README.md`. | No repositório |
 
 O `AGENTS.md` e o `CLAUDE.md` ficam na raiz porque é o local em que os assistentes de programação os procuram.
@@ -124,9 +125,9 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 - T6: parecer explicável.
 - T7: pipeline completo (`CreditEngine.analisar/1`).
 - T8: cinco cenários de ponta a ponta e demonstração pelo `iex` (comandos em `credit_engine/README.md`).
-- T2: Concluída
+- T9: verificação final do MVP (`docs/verificacao-mvp.md`).
 
-**Em andamento:** tarefa T9 do `tasks.md`: verificação final do MVP.
+**Próximas etapas (`plan.md`, seção 11):** correções e roteiro da demonstração (21 e 22/11), ensaio (23/11) e evento final (24/11).
 
 **Decidido para o MVP em 17/11/2026:** escopo, tecnologias, contratos entre as etapas, formato do parecer e valores de demonstração do Circuit Breaker, das anomalias, do score e dos limiares. Os valores servem para a demonstração e não estão calibrados com dados reais.
 

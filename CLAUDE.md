@@ -55,6 +55,7 @@ Combinado da equipe: ao concluir uma tarefa, atualize o `README.md` se a mudanç
 | `tasks.md` | Tarefas do MVP (T0 a T9), com testes e critérios de conclusão |
 | `spec.md` | Especificação do incremento 1 (recebimento e validação de propostas) |
 | `docs/verificacao-incremento-01.md` | Verificação do incremento 1 contra o `spec.md` |
+| `docs/verificacao-mvp.md` | Verificação do MVP contra o `plan.md` |
 | `credit_engine/` | Projeto Elixir: código em `lib/`, testes em `test/` |
 | `docs/decisoes-pendentes.md` | Decisões que a equipe ainda precisa aprovar |
 | `docs/diagramas/` | Descrição dos diagramas UML; as seções "Pontos a esclarecer" são questões em aberto, não decisões aprovadas |
@@ -71,8 +72,8 @@ Execute a partir da pasta `credit_engine/`:
 ## Situação atual
 
 - Documentação e diagramas no repositório.
-- MVP definido em 17/11 no `plan.md`, com as tarefas em `tasks.md`. O escopo fecha em 19/11.
+- MVP definido em 17/11 no `plan.md`, com as tarefas em `tasks.md`. O escopo fechou em 19/11; a partir daí, apenas correções.
 - Projeto Elixir criado em `credit_engine/`.
 - Primeiro incremento implementado e verificado: recebimento e validação de propostas (`CreditEngine.Proposal`). Resultados em `docs/verificacao-incremento-01.md`. O `spec.md` aguarda aprovação da equipe.
-- Circuit Breaker (T2), detecção de anomalias (T3), score de risco (T4), limiares de decisão (T5), parecer explicável (T6) e o pipeline `CreditEngine.analisar/1` (T7) estão implementados. Os cinco cenários de ponta a ponta (T8) passam e a demonstração pelo `iex` está em `credit_engine/README.md`. Falta a verificação final (T9).
+- Circuit Breaker (T2), detecção de anomalias (T3), score de risco (T4), limiares de decisão (T5), parecer explicável (T6) e o pipeline `CreditEngine.analisar/1` (T7) estão implementados. Os cinco cenários de ponta a ponta (T8) passam e a demonstração pelo `iex` está em `credit_engine/README.md`. A verificação final (T9) está em `docs/verificacao-mvp.md`: 92 testes, 0 falhas, e o MVP atende ao critério de pronto.
 - Decisões em aberto consolidadas em `docs/decisoes-pendentes.md`.

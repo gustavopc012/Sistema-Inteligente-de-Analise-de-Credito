@@ -21,7 +21,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T6 | Parecer explicável | T0 | Alan | Concluída |
 | T7 | Pipeline completo | T2 a T6 | Alan | Concluída |
 | T8 | Cenários de ponta a ponta e demonstração | T7 | Alan | Concluída |
-| T9 | Verificação e documentação final | T8 | | A fazer |
+| T9 | Verificação e documentação final | T8 | Alan | Concluída |
 
 Regras para todas as tarefas:
 
@@ -218,3 +218,5 @@ Também foi exposta a função `contribuicoes(proposal)`, que devolve `{:ok, %{c
 **Arquivos:** `docs/verificacao-mvp.md` (novo), `README.md`, `CLAUDE.md`, `tasks.md`.
 
 **Concluída quando:** existe a tabela requisito, evidência e resultado, com os resultados reais de `mix test`, e os documentos refletem o que foi entregue.
+
+**Situação:** concluída em 19/11/2026. Resultado em `docs/verificacao-mvp.md`: 92 testes, 0 falhas, e o MVP atende ao critério de pronto da seção 8 do `plan.md`. Um item ficou atendido em parte (números fixos em alguns testes), e as limitações estão na seção 11 do documento.

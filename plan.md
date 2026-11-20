@@ -64,13 +64,13 @@ Ferramentas: Elixir com Mix e ExUnit. Nenhuma dependência externa nova.
 | Módulo | Função pública | Situação |
 |---|---|---|
 | `CreditEngine.Proposal` | `new/1` | Concluído (incremento 1) |
-| `CreditEngine.Safety.CircuitBreaker` | `evaluate/1`, `status/0` | Esqueleto existente |
-| `CreditEngine.ML.Unsupervised` | `detect/1` | Esqueleto existente |
-| `CreditEngine.ML.Supervised` | `predict/1` | Esqueleto existente |
-| `CreditEngine.Decision.Thresholds` | `classify/1` | Esqueleto existente |
-| `CreditEngine.Compliance.XAI` | `explain/2` | A criar |
-| `CreditEngine.Decision` | struct do resultado | Existente |
-| `CreditEngine` | `analisar/1` | A criar |
+| `CreditEngine.Safety.CircuitBreaker` | `evaluate/1`, `status/0` | Concluído (T2) |
+| `CreditEngine.ML.Unsupervised` | `detect/1` | Concluído (T3) |
+| `CreditEngine.ML.Supervised` | `predict/1` | Concluído (T4) |
+| `CreditEngine.Decision.Thresholds` | `classify/1` | Concluído (T5) |
+| `CreditEngine.Compliance.XAI` | `explain/2` | Concluído (T6) |
+| `CreditEngine.Decision` | struct do resultado | Concluído (T7) |
+| `CreditEngine` | `analisar/1` | Concluído (T7) |
 
 ## 5. Contratos
 
