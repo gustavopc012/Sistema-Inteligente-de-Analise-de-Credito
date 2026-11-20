@@ -6,7 +6,7 @@ Antes de implementar:
 1. Leia `README.md` e `docs/planejamento-original.md`, se disponíveis.
 2. Consulte a especificação e as tarefas da funcionalidade, caso existam.
 3. Identifique documentos ausentes ou incompletos antes de depender deles.
-4. 4. Em caso de conflito entre documentos, apresente o conflito e não escolha silenciosamente qual seguir. Considere os requisitos explicitamente aprovados pelo usuário como referência principal e solicite esclarecimento quando necessário.
+4. Em caso de conflito entre documentos, apresente o conflito e não escolha silenciosamente qual seguir. Considere os requisitos explicitamente aprovados pelo usuário como referência principal e solicite esclarecimento quando necessário.
 5. Use os diagramas e o planejamento da disciplina como referência, sem presumir que detalhes ilegíveis ou ambíguos estejam confirmados.
 
 ## Regras de trabalho

@@ -52,7 +52,7 @@ Combinado da equipe: ao concluir uma tarefa, atualize o `README.md` se a mudanç
 | `AGENTS.md` | Regras para assistentes de programação |
 | `docs/fluxo-sdd.md` | Fluxo de trabalho e prompts de cada etapa |
 | `plan.md` | Plano técnico do MVP: escopo, contratos, dados e valores de demonstração |
-| `tasks.md` | Tarefas do MVP (T0 a T9), com testes e critérios de conclusão |
+| `tasks.md` | Tarefas do MVP (T0 a T10), com testes e critérios de conclusão |
 | `spec.md` | Especificação do incremento 1 (recebimento e validação de propostas) |
 | `docs/verificacao-incremento-01.md` | Verificação do incremento 1 contra o `spec.md` |
 | `docs/verificacao-mvp.md` | Verificação do MVP contra o `plan.md` |

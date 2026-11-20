@@ -6,7 +6,7 @@ O **Sistema Inteligente de Análise de Crédito** tem como objetivo apoiar a ava
 
 **Linguagem de programação:** Elixir.
 
-> **Status do projeto:** MVP concluído e verificado em 19/11/2026 (`docs/verificacao-mvp.md`). Os cinco cenários do `plan.md` funcionam de ponta a ponta e podem ser demonstrados pelo `iex` ou por uma interface web, adicionada em 20/11/2026 (`credit_engine/README.md`). São 108 testes, sem falhas.
+> **Status do projeto:** núcleo do MVP concluído e verificado em 19/11/2026 (`docs/verificacao-mvp.md`), com 92 testes aprovados. Em 20/11/2026, foi adicionada a interface web de demonstração (T10), descrita em `credit_engine/README.md`. O projeto conta atualmente com 108 testes, sem falhas registradas, e os cinco cenários do `plan.md` podem ser demonstrados pelo `iex` ou pela interface web.
 
 ## Objetivos
 
