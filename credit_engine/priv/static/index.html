@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CreditEngine — Análise de Crédito</title>
+<style>
+  :root {
+    --fundo: #f4f5f7;
+    --cartao: #ffffff;
+    --borda: #e2e5ea;
+    --texto: #1c2430;
+    --suave: #5d6878;
+    --fraco: #98a1ae;
+    --marca: #24324a;
+    --destaque: #3d5afe;
+    --verde: #1e8a4f;
+    --verde-claro: #e6f4ec;
+    --ambar: #b7791f;
+    --ambar-claro: #fdf3e1;
+    --vermelho: #c53030;
+    --vermelho-claro: #fbeaea;
+    --vinho: #8a1c3c;
+    --vinho-claro: #f8e7ed;
+    --raio: 12px;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  header {
+    background: var(--marca);
+    color: #fff;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: .2px; }
+  header p { margin: 2px 0 0; color: #b9c3d6; font-size: 13px; }
+  .cb-pill {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .cb-pill strong { font-variant-numeric: tabular-nums; }
+
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 32px 48px; }
+
+  .cenarios {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .cenarios span { color: var(--suave); font-size: 13px; margin-right: 4px; }
+  .cenarios button {
+    font: inherit;
+    font-size: 13.5px;
+    background: var(--cartao);
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+    color: var(--texto);
+    transition: border-color .15s, background .15s;
+  }
+  .cenarios button:hover { border-color: var(--destaque); }
+  .cenarios button.ativo { background: var(--destaque); border-color: var(--destaque); color: #fff; }
+  .cenarios button b { font-weight: 650; margin-right: 4px; }
+
+  .grade { display: grid; grid-template-columns: 360px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 960px) { .grade { grid-template-columns: 1fr; } }
+
+  .cartao {
+    background: var(--cartao);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    padding: 20px;
+  }
+  .cartao h2 {
+    margin: 0 0 14px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--suave);
+    font-weight: 650;
+  }
+
+  fieldset { border: 0; margin: 0 0 16px; padding: 0; }
+  legend {
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--marca);
+    margin-bottom: 8px;
+    padding: 0;
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+  }
+  legend code { font-family: var(--mono); font-weight: 400; color: var(--fraco); font-size: 11.5px; }
+  label { display: block; font-size: 13px; color: var(--suave); margin-bottom: 8px; }
+  label small { color: var(--fraco); }
+  input {
+    display: block;
+    width: 100%;
+    margin-top: 3px;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    padding: 7px 10px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    background: #fbfbfc;
+    color: var(--texto);
+  }
+  input:focus { outline: 2px solid rgba(61,90,254,.25); border-color: var(--destaque); background: #fff; }
+  input.erro { border-color: var(--vermelho); background: var(--vermelho-claro); }
+  .linha { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; align-items: end; }
+  .enviar {
+    width: 100%;
+    font: inherit;
+    font-weight: 600;
+    background: var(--destaque);
+    color: #fff;
+    border: 0;
+    border-radius: 9px;
+    padding: 11px;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .enviar:hover { filter: brightness(1.08); }
+
+  .vazio { text-align: center; color: var(--suave); padding: 56px 20px; }
+  .vazio p { margin: 4px 0; }
+
+  /* Pipeline */
+  .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+  @media (max-width: 720px) { .pipeline { grid-template-columns: 1fr; } }
+  .etapa {
+    position: relative;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 12px;
+    background: #fafbfc;
+    min-height: 104px;
+  }
+  .etapa:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fraco);
+    font-size: 13px;
+    z-index: 1;
+  }
+  @media (max-width: 720px) { .etapa:not(:last-child)::after { display: none; } }
+  .etapa .num { font-size: 11px; color: var(--fraco); font-weight: 600; }
+  .etapa .nome { font-weight: 650; font-size: 14px; margin: 2px 0 6px; }
+  .etapa .det { font-size: 12.5px; color: var(--suave); font-variant-numeric: tabular-nums; }
+  .etapa .marca {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .etapa.passou { border-color: #bfe0cc; background: var(--verde-claro); }
+  .etapa.passou .marca { background: var(--verde); }
+  .etapa.bloqueou { border-color: #efc0c0; background: var(--vermelho-claro); }
+  .etapa.bloqueou .marca { background: var(--vermelho); }
+  .etapa.nao_executada { opacity: .5; }
+  .etapa.nao_executada .marca { background: var(--fraco); }
+
+  /* Decisão */
+  .decisao {
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .decisao .rotulo { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; font-weight: 650; opacity: .8; }
+  .decisao .status { font-size: 28px; font-weight: 750; letter-spacing: .2px; }
+  .decisao .explica { flex: 1 1 260px; font-size: 14px; }
+  .decisao .score-num { text-align: right; }
+  .decisao .score-num .valor { font-size: 28px; font-weight: 750; font-variant-numeric: tabular-nums; }
+  .s-aprovado { background: var(--verde-claro); color: var(--verde); }
+  .s-analise_manual { background: var(--ambar-claro); color: var(--ambar); }
+  .s-recusado { background: var(--vermelho-claro); color: var(--vermelho); }
+  .s-recusa_automatica, .s-recusa_seguranca { background: var(--vinho-claro); color: var(--vinho); }
+  .s-erro { background: var(--vermelho-claro); color: var(--vermelho); }
+  .decisao .explica { color: var(--texto); }
+
+  /* Régua do score */
+  .regua { margin: 4px 0 24px; }
+  .regua .barra { position: relative; height: 14px; border-radius: 7px; display: flex; overflow: hidden; }
+  .regua .zona { height: 100%; }
+  .regua .z1 { background: #b6dfc6; }
+  .regua .z2 { background: #f3d9a4; }
+  .regua .z3 { background: #f0b8b8; }
+  .regua .ponteiro {
+    position: absolute;
+    top: -6px;
+    width: 4px;
+    height: 26px;
+    margin-left: -2px;
+    background: var(--marca);
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px #fff;
+  }
+  .regua .marcas { position: relative; height: 18px; font-size: 11.5px; color: var(--suave); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .regua .marcas span { position: absolute; transform: translateX(-50%); }
+  .regua .marcas span:first-child { transform: none; }
+  .regua .marcas span:last-child { transform: translateX(-100%); }
+  .regua .legenda { display: flex; gap: 16px; font-size: 12px; color: var(--suave); margin-top: 2px; flex-wrap: wrap; }
+  .regua .legenda i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+
+  /* Parecer */
+  .parecer { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 8px; }
+  @media (max-width: 720px) { .parecer { grid-template-columns: 1fr; } }
+  .parecer h3 { font-size: 13.5px; margin: 0 0 10px; display: flex; align-items: center; gap: 6px; }
+  .parecer h3 .ponto { width: 9px; height: 9px; border-radius: 50%; }
+  .fator { margin-bottom: 10px; }
+  .fator .topo { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; gap: 8px; }
+  .fator .topo b { font-variant-numeric: tabular-nums; font-weight: 650; }
+  .fator .trilho { height: 8px; background: #eef0f3; border-radius: 4px; overflow: hidden; }
+  .fator .preenchido { height: 100%; border-radius: 4px; }
+  .pos .preenchido, .pos .ponto { background: var(--verde); }
+  .neg .preenchido, .neg .ponto { background: var(--vermelho); }
+  .pos .topo b { color: var(--verde); }
+  .neg .topo b { color: var(--vermelho); }
+  .nenhum { font-size: 13px; color: var(--fraco); }
+  .nota { font-size: 12px; color: var(--fraco); margin: 6px 0 0; }
+
+  details { margin-top: 20px; border-top: 1px solid var(--borda); padding-top: 14px; }
+  summary { cursor: pointer; font-size: 13px; color: var(--suave); font-weight: 600; }
+  pre {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: #1d2433;
+    color: #e3e8f2;
+    border-radius: 9px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 10px 0 0;
+  }
+  .sec-titulo { font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: var(--suave); font-weight: 650; margin: 0 0 10px; }
+  footer { text-align: center; color: var(--fraco); font-size: 12px; padding: 0 0 24px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Sistema Inteligente de Análise de Crédito</h1>
+    <p>Equipe Omicron · MVP em Elixir · dados sintéticos de demonstração</p>
+  </div>
+  <div class="cb-pill" id="cb">Circuit Breaker: carregando…</div>
+</header>
+
+<main>
+  <div class="cenarios" id="cenarios">
+    <span>Cenários:</span>
+  </div>
+
+  <div class="grade">
+    <form class="cartao" id="form" autocomplete="off">
+      <h2>Proposta de crédito</h2>
+
+      <fieldset>
+        <legend>Identificação</legend>
+        <label>Identificador da proposta
+          <input name="id" value="DEMO-001">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Mercado <code>macroeconomic_data</code></legend>
+        <label>Taxa de inadimplência do mercado <small>(0 a 1)</small>
+          <input name="taxa_inadimplencia_mercado" inputmode="decimal">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Comportamento <code>behavioral_data</code></legend>
+        <label>Transações noturnas
+          <input name="transacoes_noturnas" inputmode="numeric">
+        </label>
+        <div class="linha">
+          <label>Dispositivos novos
+            <input name="dispositivos_novos" inputmode="numeric">
+          </label>
+          <label>Logins com falha
+            <input name="tentativas_login_falhas" inputmode="numeric">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Open Finance <code>open_finance_data</code></legend>
+        <div class="linha">
+          <label>Comprometimento da renda <small>(0 a 1)</small>
+            <input name="comprometimento_renda" inputmode="decimal">
+          </label>
+          <label>Atrasos em 12 meses
+            <input name="atrasos_12m" inputmode="numeric">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cadastro <code>applicant_data</code></legend>
+        <label>Tempo de relacionamento <small>(anos)</small>
+          <input name="tempo_relacionamento_anos" inputmode="decimal">
+        </label>
+      </fieldset>
+
+      <button class="enviar" type="submit">Analisar proposta</button>
+    </form>
+
+    <section class="cartao" id="resultado">
+      <div class="vazio">
+        <p><strong>Escolha um cenário ou preencha a proposta.</strong></p>
+        <p>A análise passa por Circuit Breaker → anomalias → score → limiares → parecer.</p>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>CreditEngine · Conceitos de Linguagem de Programação · UFAL</footer>
+
+<script>
+  const NOMES = {
+    taxa_inadimplencia_mercado: "Taxa de inadimplência do mercado",
+    transacoes_noturnas: "Transações noturnas",
+    dispositivos_novos: "Dispositivos novos",
+    tentativas_login_falhas: "Tentativas de login com falha",
+    comprometimento_renda: "Comprometimento da renda",
+    atrasos_12m: "Atrasos nos últimos 12 meses",
+    tempo_relacionamento_anos: "Tempo de relacionamento",
+    id: "Identificador"
+  };
+
+  const NORMAL = {
+    taxa_inadimplencia_mercado: "0.05",
+    transacoes_noturnas: "2", dispositivos_novos: "0", tentativas_login_falhas: "1",
+    comprometimento_renda: "0.2", atrasos_12m: "0", tempo_relacionamento_anos: "5"
+  };
+
+  // Mesmos valores da seção "Demonstração" do credit_engine/README.md.
+  const CENARIOS = [
+    { titulo: "Colapso de mercado", id: "DEMO-001", dados: { taxa_inadimplencia_mercado: "0.10" } },
+    { titulo: "Suspeita de fraude", id: "DEMO-002", dados: { transacoes_noturnas: "10" } },
+    { titulo: "Bom pagador", id: "DEMO-003", dados: {} },
+    { titulo: "Mau pagador", id: "DEMO-004", dados: { comprometimento_renda: "0.8", atrasos_12m: "3", tempo_relacionamento_anos: "1" } },
+    { titulo: "Perfil intermediário", id: "DEMO-005", dados: { comprometimento_renda: "0.5", atrasos_12m: "1", tempo_relacionamento_anos: "2" } }
+  ];
+
+  const STATUS = {
+    aprovado: { nome: "Aprovado", texto: p => `Probabilidade de inadimplência abaixo de ${num(p.aprovado_abaixo_de, 2)}.` },
+    analise_manual: { nome: "Análise manual", texto: p => `Probabilidade entre ${num(p.aprovado_abaixo_de, 2)} e ${num(p.recusado_acima_de, 2)}: a proposta segue para um analista.` },
+    recusado: { nome: "Recusado", texto: p => `Probabilidade de inadimplência acima de ${num(p.recusado_acima_de, 2)}.` },
+    recusa_automatica: { nome: "Recusa automática", texto: () => "O Circuit Breaker detectou colapso de mercado. Nenhuma outra etapa foi executada." },
+    recusa_seguranca: { nome: "Recusa de segurança", texto: () => "Comportamento fora do padrão (suspeita de fraude ou bot). O score não foi calculado." }
+  };
+
+  const ETAPAS = {
+    circuit_breaker: "Circuit Breaker",
+    anomalias: "Anomalias",
+    score: "Score de risco",
+    limiares: "Limiares",
+    parecer: "Parecer"
+  };
+
+  const form = document.getElementById("form");
+  const saida = document.getElementById("resultado");
+
+  function num(v, casas) {
+    return Number(v).toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+  }
+
+  function esc(t) {
+    return String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+
+  function preencher(cenario) {
+    const valores = Object.assign({}, NORMAL, cenario.dados);
+    form.elements.id.value = cenario.id;
+    for (const [campo, valor] of Object.entries(valores)) form.elements[campo].value = valor;
+  }
+
+  function atualizarCB(cb) {
+    const limite = num(cb.limite * 100, 0);
+    document.getElementById("cb").innerHTML =
+      `Circuit Breaker · limite ${limite}% · <strong>${cb.bloqueios}</strong> bloqueio${cb.bloqueios === 1 ? "" : "s"}`;
+  }
+
+  async function analisar() {
+    form.querySelectorAll("input").forEach(i => i.classList.remove("erro"));
+    const query = new URLSearchParams(new FormData(form)).toString();
+    try {
+      const resposta = await fetch("/api/analisar?" + query);
+      const dados = await resposta.json();
+      atualizarCB(dados.circuit_breaker);
+      dados.ok ? mostrarDecisao(dados) : mostrarErro(dados);
+    } catch (e) {
+      saida.innerHTML = `<div class="decisao s-erro"><div class="explica">Não foi possível falar com o servidor. Ele ainda está rodando?</div></div>`;
+    }
+  }
+
+  function detalheEtapa(etapa, resultado, dados) {
+    const p = dados.parametros;
+    const d = dados.decisao;
+    if (resultado === "nao_executada") return "Não executada";
+    switch (etapa) {
+      case "circuit_breaker": {
+        const taxa = Number(String(form.elements.taxa_inadimplencia_mercado.value).replace(",", "."));
+        const sinal = resultado === "bloqueou" ? ">" : "≤";
+        return `Taxa ${num(taxa * 100, 1)}% ${sinal} limite ${num(p.limite_taxa_inadimplencia * 100, 0)}%`;
+      }
+      case "anomalias": {
+        if (dados.distancia === null) return resultado === "bloqueou" ? "Suspeita de fraude" : "Comportamento padrão";
+        const sinal = resultado === "bloqueou" ? ">" : "≤";
+        return `Distância ${num(dados.distancia, 1)} ${sinal} máx. ${num(p.distancia_maxima, 1)}`;
+      }
+      case "score": return `Probabilidade ${num(d.score, 3)}`;
+      case "limiares": return STATUS[d.status].nome;
+      case "parecer": {
+        const n = d.explanation.fatores_positivos.length + d.explanation.fatores_negativos.length;
+        return `${n} fator${n === 1 ? "" : "es"}`;
+      }
+    }
+  }
+
+  function pipelineHTML(dados) {
+    const icone = { passou: "✓", bloqueou: "✕", nao_executada: "–" };
+    return `<div class="pipeline">` + dados.etapas.map((e, i) => `
+      <div class="etapa ${e.resultado}">
+        <span class="marca">${icone[e.resultado]}</span>
+        <div class="num">ETAPA ${i + 1}</div>
+        <div class="nome">${ETAPAS[e.etapa]}</div>
+        <div class="det">${esc(detalheEtapa(e.etapa, e.resultado, dados))}</div>
+      </div>`).join("") + `</div>`;
+  }
+
+  function reguaHTML(score, p) {
+    const a = p.aprovado_abaixo_de * 100, r = p.recusado_acima_de * 100;
+    return `
+      <div class="regua">
+        <div class="barra">
+          <div class="zona z1" style="width:${a}%"></div>
+          <div class="zona z2" style="width:${r - a}%"></div>
+          <div class="zona z3" style="width:${100 - r}%"></div>
+          <div class="ponteiro" style="left:${Math.min(100, Math.max(0, score * 100))}%"></div>
+        </div>
+        <div class="marcas">
+          <span style="left:0">0</span>
+          <span style="left:${a}%">${num(p.aprovado_abaixo_de, 2)}</span>
+          <span style="left:${r}%">${num(p.recusado_acima_de, 2)}</span>
+          <span style="left:100%">1</span>
+        </div>
+        <div class="legenda">
+          <span><i style="background:#b6dfc6"></i>Aprovado</span>
+          <span><i style="background:#f3d9a4"></i>Análise manual</span>
+          <span><i style="background:#f0b8b8"></i>Recusado</span>
+        </div>
+      </div>`;
+  }
+
+  function fatoresHTML(fatores, maior, classe) {
+    if (fatores.length === 0) return `<div class="nenhum">Nenhum fator.</div>`;
+    return fatores.map(f => {
+      const largura = maior > 0 ? Math.abs(f.contribuicao) / maior * 100 : 0;
+      const sinal = f.contribuicao > 0 ? "+" : "−";
+      return `
+        <div class="fator ${classe}">
+          <div class="topo"><span>${esc(NOMES[f.campo] || f.campo)}</span><b>${sinal}${num(Math.abs(f.contribuicao), 2)}</b></div>
+          <div class="trilho"><div class="preenchido" style="width:${largura}%"></div></div>
+        </div>`;
+    }).join("");
+  }
+
+  function parecerHTML(parecer) {
+    const todos = parecer.fatores_positivos.concat(parecer.fatores_negativos);
+    const maior = Math.max(0, ...todos.map(f => Math.abs(f.contribuicao)));
+    return `
+      <p class="sec-titulo">Parecer explicável</p>
+      <div class="parecer">
+        <div class="neg"><h3><span class="ponto"></span>Aumentam o risco</h3>${fatoresHTML(parecer.fatores_negativos, maior, "neg")}</div>
+        <div class="pos"><h3><span class="ponto"></span>Reduzem o risco</h3>${fatoresHTML(parecer.fatores_positivos, maior, "pos")}</div>
+      </div>
+      <p class="nota">Contribuição de cada campo = peso × valor. Campos com contribuição zero não aparecem.</p>`;
+  }
+
+  function elixirHTML(dados) {
+    return `<details><summary>Retorno de CreditEngine.analisar/1 em Elixir</summary><pre>${esc(dados.elixir)}</pre></details>`;
+  }
+
+  function mostrarDecisao(dados) {
+    const d = dados.decisao, p = dados.parametros, s = STATUS[d.status];
+    const temScore = d.score !== null;
+    saida.innerHTML = `
+      <h2>Resultado</h2>
+      ${pipelineHTML(dados)}
+      <div class="decisao s-${d.status}">
+        <div>
+          <div class="rotulo">Decisão</div>
+          <div class="status">${s.nome}</div>
+        </div>
+        <div class="explica">${esc(s.texto(p))}</div>
+        ${temScore ? `<div class="score-num"><div class="rotulo">Probabilidade de inadimplência</div><div class="valor">${num(d.score * 100, 1)}%</div></div>` : ""}
+      </div>
+      ${temScore ? `<p class="sec-titulo">Score de risco</p>${reguaHTML(d.score, p)}` : ""}
+      ${d.explanation ? parecerHTML(d.explanation) : ""}
+      ${elixirHTML(dados)}`;
+  }
+
+  function mostrarErro(dados) {
+    const campo = dados.erro.campo;
+    if (campo && form.elements[campo]) form.elements[campo].classList.add("erro");
+    saida.innerHTML = `
+      <h2>Resultado</h2>
+      <div class="decisao s-erro">
+        <div>
+          <div class="rotulo">Entrada inválida</div>
+          <div class="status">Erro</div>
+        </div>
+        <div class="explica">${esc(campo && NOMES[campo] ? dados.erro.mensagem.replace(campo, NOMES[campo].toLowerCase()) : dados.erro.mensagem)}</div>
+      </div>
+      ${elixirHTML(dados)}`;
+    saida.querySelector("details").open = true;
+  }
+
+  const barra = document.getElementById("cenarios");
+  CENARIOS.forEach((c, i) => {
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.innerHTML = `<b>${i + 1}</b>${c.titulo}`;
+    botao.addEventListener("click", () => {
+      barra.querySelectorAll("button").forEach(b => b.classList.remove("ativo"));
+      botao.classList.add("ativo");
+      preencher(c);
+      analisar();
+    });
+    barra.appendChild(botao);
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    barra.querySelectorAll("button").forEach(b => b.classList.remove("ativo"));
+    analisar();
+  });
+
+  preencher(CENARIOS[2]);
+  fetch("/api/status").then(r => r.json()).then(d => atualizarCB(d.circuit_breaker)).catch(() => {});
+</script>
+</body>
+</html>
