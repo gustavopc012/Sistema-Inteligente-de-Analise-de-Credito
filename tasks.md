@@ -19,7 +19,7 @@ As tarefas T2 a T6 são independentes e podem ser feitas em paralelo, depois da 
 | T4 | Score de risco | T0 | Alan | Concluída |
 | T5 | Limiares de decisão | T0 | Alan | Concluída |
 | T6 | Parecer explicável | T0 | Alan | Concluída |
-| T7 | Pipeline completo | T2 a T6 | | A fazer |
+| T7 | Pipeline completo | T2 a T6 | Alan | Concluída |
 | T8 | Cenários de ponta a ponta e demonstração | T7 | | A fazer |
 | T9 | Verificação e documentação final | T8 | | A fazer |
 
@@ -190,6 +190,10 @@ Também foi exposta a função `contribuicoes(proposal)`, que devolve `{:ok, %{c
 **Testes:** um teste por status possível e um para entrada inválida.
 
 **Concluída quando:** os testes passam.
+
+**Situação:** concluída em 19/11/2026, com 10 testes em `test/credit_engine/pipeline_test.exs` (um por status, dois de ordem das etapas e três de entrada inválida).
+
+**Complementado em 19/11/2026 (T7):** a struct `%Decision{}` existente foi mantida: `score` guarda a probabilidade de inadimplência (0 a 1) e `explanation` guarda o parecer da T6. Erros de entrada são devolvidos como vêm da etapa que falhou (por exemplo, `{:error, :invalid_id}` ou `{:error, {:dado_ausente, campo}}`).
 
 ---
 

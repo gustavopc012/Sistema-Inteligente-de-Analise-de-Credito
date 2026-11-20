@@ -122,9 +122,10 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 - T4: score de risco.
 - T5: limiares de decisão.
 - T6: parecer explicável.
+- T7: pipeline completo (`CreditEngine.analisar/1`).
 - T2: Concluída
 
-**Em andamento:** tarefas T7 a T9 do `tasks.md`: pipeline, cenários de ponta a ponta e verificação final.
+**Em andamento:** tarefas T8 e T9 do `tasks.md`: cenários de ponta a ponta com demonstração no `iex` e verificação final.
 
 **Decidido para o MVP em 17/11/2026:** escopo, tecnologias, contratos entre as etapas, formato do parecer e valores de demonstração do Circuit Breaker, das anomalias, do score e dos limiares. Os valores servem para a demonstração e não estão calibrados com dados reais.
 
