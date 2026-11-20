@@ -12,9 +12,9 @@ Siga as instruções de @AGENTS.md em todas as tarefas. Em resumo: não invente 
 
 ## Tecnologias
 
-- **Em uso:** Elixir, com projeto Mix e testes ExUnit em `credit_engine/`. Sem dependências externas nesta etapa.
+- **Em uso:** Elixir, com projeto Mix e testes ExUnit em `credit_engine/`, GenServer no Circuit Breaker e `:httpd` (Erlang/OTP) na interface web. Sem dependências externas.
 - **Decisão do MVP (17/11):** as tecnologias dos diagramas formam a arquitetura final; o MVP usa Elixir puro com GenServer. Ver `plan.md`, seção 3.
-- **Mencionadas nos diagramas, ainda não aprovadas:** Phoenix, Nx/Bumblebee, XGBoost, DNNs, Redis, PostgreSQL, NGINX, Kubernetes, Isolation Forest e K-Means. Não adicione nenhuma delas como dependência sem aprovação da equipe.
+- **Arquitetura final, fora do MVP:** Phoenix, Nx/Bumblebee, XGBoost, DNNs, Redis, PostgreSQL, NGINX, Kubernetes, Isolation Forest e K-Means. Não adicione nenhuma delas como dependência sem aprovação da equipe.
 - **Previsto no quadro da equipe e ainda não adicionado:** Credo.
 
 ## Arquitetura planejada

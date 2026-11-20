@@ -53,7 +53,8 @@ Essas funcionalidades representam o escopo planejado; não significam que já es
 
 - **Elixir:** linguagem de programação do projeto.
 - **Mix e ExUnit:** estrutura do projeto e testes automatizados, em uso na pasta `credit_engine/`. O projeto não possui dependências externas nesta etapa.
-- **GenServer (OTP):** previsto para o Circuit Breaker (tarefa T2).
+- **GenServer (OTP):** usado no Circuit Breaker (tarefa T2), supervisionado pela aplicação.
+- **`:httpd` (Erlang/OTP):** servidor da interface web de demonstração (tarefa T10). Já vem com o Erlang, sem dependência externa.
 
 ### Tecnologias da arquitetura final (diagramas)
 
