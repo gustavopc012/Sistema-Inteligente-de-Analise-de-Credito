@@ -159,10 +159,17 @@ Depois desta verificação, a equipe adicionou a interface web de demonstração
 | Testes da interface | Decisão da API igual à de `CreditEngine.analisar/1`; etapas executadas em cada tipo de recusa; erros 422 com o campo; rotas `/`, `/api/analisar`, `/api/status` e 404 por HTTP; servidor só em `127.0.0.1` |
 | Navegador (Chromium) | Cinco cenários e uma entrada inválida conferidos em largura de computador e de celular |
 
+### Reexecução no Codespace — 20/11/2026
+
+- **Ambiente:** Ubuntu 24.04.5 LTS, Elixir 1.14.0 e Erlang/OTP 25.
+- `mix test`: 108 testes, 0 falhas (seed 412181).
+- `mix format --check-formatted`: concluído sem arquivos fora do padrão.
+- `mix compile --warnings-as-errors`: compilação concluída sem avisos.
+
 ## 14. Referências
 
 - `plan.md`, seções 2 a 9.
-- `tasks.md`, tarefas T0 a T9.
+- `tasks.md`, tarefas T0 a T10.
 - `docs/fluxo-sdd.md`, Etapa 5.
 - `docs/diagramas/sequencia.md`, cenários BDD.
 - `docs/verificacao-incremento-01.md`, verificação do incremento 1.
