@@ -9,12 +9,43 @@ defmodule CreditEngine.WebTest do
     {:ok, url: servidor.url, pid: servidor.pid}
   end
 
+  # Requisição HTTP feita direto pelo socket (:gen_tcp), sem o :httpc.
+  # A partir do Elixir 1.15, o Mix só carrega as aplicações declaradas, e o
+  # :httpc precisa da :public_key mesmo para HTTP simples (o teste falhava
+  # no Windows com Elixir 1.20).
   defp get(url) do
-    {:ok, {{_versao, codigo, _frase}, cabecalhos, corpo}} =
-      :httpc.request(:get, {String.to_charlist(url), []}, [], body_format: :binary)
+    %URI{port: porta, path: caminho, query: query} = URI.parse(url)
+    alvo = if query, do: "#{caminho}?#{query}", else: caminho
 
-    tipo = cabecalhos |> List.keyfind(~c"content-type", 0) |> elem(1) |> to_string()
-    {codigo, tipo, corpo}
+    {:ok, socket} = :gen_tcp.connect({127, 0, 0, 1}, porta, [:binary, active: false], 5_000)
+
+    :ok =
+      :gen_tcp.send(
+        socket,
+        "GET #{alvo} HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: close\r\n\r\n"
+      )
+
+    resposta = receber(socket, "")
+    :gen_tcp.close(socket)
+
+    [cabecalho, corpo] = String.split(resposta, "\r\n\r\n", parts: 2)
+    [linha_status | linhas] = String.split(cabecalho, "\r\n")
+    [_versao, codigo | _frase] = String.split(linha_status, " ")
+
+    cabecalhos =
+      Map.new(linhas, fn linha ->
+        [nome, valor] = String.split(linha, ":", parts: 2)
+        {String.downcase(nome), String.trim(valor)}
+      end)
+
+    {String.to_integer(codigo), Map.fetch!(cabecalhos, "content-type"), corpo}
+  end
+
+  defp receber(socket, acumulado) do
+    case :gen_tcp.recv(socket, 0, 5_000) do
+      {:ok, dados} -> receber(socket, acumulado <> dados)
+      {:error, :closed} -> acumulado
+    end
   end
 
   test "GET / devolve a página da interface", %{url: url} do
