@@ -7,7 +7,7 @@ defmodule CreditEngine.Web do
   próprio computador (`127.0.0.1`).
 
   Para abrir: `mix credit_engine.web`, ou `CreditEngine.Web.start()` dentro do
-  `iex -S mix`. Depois, acesse http://localhost:4000 no navegador.
+  `iex -S mix`. Depois, acesse http://127.0.0.1:4000 no navegador.
   """
 
   @porta_padrao 4000
@@ -32,7 +32,9 @@ defmodule CreditEngine.Web do
 
     with {:ok, pid} <- :inets.start(:httpd, configuracao) do
       porta = :httpd.info(pid)[:port]
-      {:ok, %{pid: pid, porta: porta, url: "http://localhost:#{porta}"}}
+      # O endereço é 127.0.0.1, e não localhost: no Windows, localhost pode
+      # resolver primeiro para o IPv6 (::1), onde o servidor não escuta.
+      {:ok, %{pid: pid, porta: porta, url: "http://127.0.0.1:#{porta}"}}
     end
   end
 

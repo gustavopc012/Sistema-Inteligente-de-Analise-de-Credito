@@ -127,7 +127,7 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 - T7: pipeline completo (`CreditEngine.analisar/1`).
 - T8: cinco cenários de ponta a ponta e demonstração pelo `iex` (comandos em `credit_engine/README.md`).
 - T9: verificação final do MVP (`docs/verificacao-mvp.md`).
-- T10: interface web de demonstração (`mix credit_engine.web`, em http://localhost:4000). Detalhes no `plan.md`, seção 13.
+- T10: interface web de demonstração (`mix credit_engine.web`, em http://127.0.0.1:4000). Detalhes no `plan.md`, seção 13.
 
 **Próximas etapas (`plan.md`, seção 11):** correções e roteiro da demonstração (21 e 22/11), ensaio (23/11) e evento final (24/11).
 

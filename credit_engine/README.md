@@ -36,7 +36,7 @@ Além do `iex`, a demonstração pode ser feita pelo navegador. Na pasta `credit
 mix credit_engine.web
 ```
 
-Depois, abra http://localhost:4000. Para encerrar, use Ctrl+C duas vezes. Se a porta 4000 estiver ocupada, use outra: `mix credit_engine.web 4001`.
+Depois, abra http://127.0.0.1:4000. Use esse endereço, e não `localhost`: no Windows, `localhost` pode apontar para o IPv6, onde o servidor não escuta. Para encerrar, use Ctrl+C duas vezes. Se a porta 4000 estiver ocupada, use outra: `mix credit_engine.web 4001`.
 
 Também dá para abrir a interface de dentro do `iex -S mix`, com `CreditEngine.Web.start()`. Assim, o `iex` e o navegador usam o mesmo Circuit Breaker, e o contador de bloqueios é o mesmo nos dois.
 

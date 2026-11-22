@@ -1,5 +1,5 @@
 defmodule Mix.Tasks.CreditEngine.Web do
-  @shortdoc "Abre a interface web de demonstração em http://localhost:4000"
+  @shortdoc "Abre a interface web de demonstração em http://127.0.0.1:4000"
 
   @moduledoc """
   Inicia a aplicação e a interface web de demonstração.
