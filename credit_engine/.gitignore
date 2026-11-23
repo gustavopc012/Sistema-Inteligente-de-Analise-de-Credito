@@ -9,3 +9,7 @@ cover/
 # Arquivos temporários
 *.beam
 *.ez
+
+# Dados das propostas cadastradas (arquivos DETS)
+data/
+tmp/

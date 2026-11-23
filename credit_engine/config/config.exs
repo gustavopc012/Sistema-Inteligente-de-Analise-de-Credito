@@ -34,3 +34,9 @@ config :credit_engine, :score,
 config :credit_engine, :limiares,
   aprovado_abaixo_de: 0.30,
   recusado_acima_de: 0.60
+
+# Incremento 11 — Arquivo DETS onde ficam as propostas cadastradas e o
+# histórico de análises. Os testes usam um arquivo separado.
+config :credit_engine, :armazenamento,
+  arquivo:
+    if(config_env() == :test, do: "tmp/test/propostas.dets", else: "data/propostas.dets")
