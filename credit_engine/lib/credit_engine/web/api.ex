@@ -10,7 +10,9 @@ defmodule CreditEngine.Web.API do
   alias CreditEngine.Decision
   alias CreditEngine.ML.Unsupervised
   alias CreditEngine.Proposal
+  alias CreditEngine.ProposalService
   alias CreditEngine.Safety.CircuitBreaker
+  alias CreditEngine.Web.JSONDecoder
 
   @campos [
     {:macroeconomic_data, :taxa_inadimplencia_mercado},
@@ -67,6 +69,56 @@ defmodule CreditEngine.Web.API do
   def status do
     {200, %{circuit_breaker: CircuitBreaker.status(), parametros: parametros_config()}}
   end
+
+  # Incremento 11 — cadastro e histórico de propostas
+
+  @doc "POST /api/propostas: cadastra a proposta descrita no corpo, em JSON."
+  @spec cadastrar_proposta(binary()) :: {pos_integer(), map()}
+  def cadastrar_proposta(corpo) do
+    case JSONDecoder.decode(corpo) do
+      {:ok, atributos} when is_map(atributos) ->
+        case ProposalService.cadastrar(atributos) do
+          {:ok, proposta} -> {201, %{ok: true, proposta: proposta}}
+          erro -> erro_proposta(erro)
+        end
+
+      _ ->
+        {422, falha("O corpo da requisição precisa ser um objeto JSON válido.")}
+    end
+  end
+
+  @doc "GET /api/propostas/:id: dados e estado atual da proposta."
+  @spec consultar_proposta(String.t()) :: {pos_integer(), map()}
+  def consultar_proposta(id), do: responder(ProposalService.consultar(id), :proposta)
+
+  @doc "GET /api/propostas: identificador e estado atual de cada proposta."
+  @spec listar_propostas() :: {pos_integer(), map()}
+  def listar_propostas, do: responder(ProposalService.listar(), :propostas)
+
+  @doc "GET /api/propostas/:id/historico: análises da proposta, da mais antiga para a mais recente."
+  @spec historico_proposta(String.t()) :: {pos_integer(), map()}
+  def historico_proposta(id), do: responder(ProposalService.historico(id), :historico)
+
+  @doc "POST /api/propostas/:id/analisar: analisa a proposta com os dados cadastrados."
+  @spec analisar_proposta(String.t()) :: {pos_integer(), map()}
+  def analisar_proposta(id), do: responder(ProposalService.analisar(id), :analise)
+
+  defp responder({:ok, valor}, chave), do: {200, %{:ok => true, chave => valor}}
+  defp responder(erro, _chave), do: erro_proposta(erro)
+
+  defp erro_proposta({:error, :nao_encontrada}), do: {404, falha("Proposta não encontrada.")}
+
+  defp erro_proposta({:error, :duplicado}),
+    do: {409, falha("Já existe uma proposta com esse identificador.")}
+
+  # Mensagem genérica: detalhes da falha ficam só no log.
+  defp erro_proposta({:error, :armazenamento_indisponivel}),
+    do: {500, falha("Erro interno. Tente novamente mais tarde.")}
+
+  defp erro_proposta({:error, motivo}),
+    do: {422, %{ok: false, erro: %{mensagem: mensagem(motivo), campo: campo(motivo)}}}
+
+  defp falha(mensagem), do: %{ok: false, erro: %{mensagem: mensagem, campo: nil}}
 
   @doc false
   def atributos(parametros) do
@@ -149,6 +201,12 @@ defmodule CreditEngine.Web.API do
   defp mensagem({:dado_ausente, campo}), do: "Campo obrigatório ausente: #{campo}."
   defp mensagem({:dado_invalido, campo}), do: "Valor inválido no campo #{campo}."
   defp mensagem(:invalid_id), do: "O identificador da proposta não pode ficar vazio."
+  defp mensagem(:invalid_attributes), do: "Os dados da proposta precisam ser um objeto."
+
+  defp mensagem({:unknown_fields, campos}),
+    do: "Campos não reconhecidos: #{Enum.map_join(campos, ", ", &to_string/1)}."
+
+  defp mensagem({:invalid_field, campo}), do: "O campo #{campo} precisa ser um objeto."
   defp mensagem(motivo), do: "Entrada inválida: #{inspect(motivo)}."
 
   defp campo({_tipo, campo}) when is_atom(campo), do: campo
