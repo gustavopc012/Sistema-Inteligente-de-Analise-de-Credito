@@ -4,14 +4,14 @@
 
 Definir a arquitetura e a sequência de implementação do Incremento 11, respeitando a especificação funcional aprovada em `docs/spec-incremento-11.md`.
 
-O MVP concluído deverá ser preservado. As alterações serão incrementais e concentradas nos componentes necessários ao cadastro, armazenamento em memória, consulta e histórico das propostas.
+O MVP concluído deverá ser preservado. As alterações serão incrementais e concentradas nos componentes necessários ao cadastro, armazenamento, consulta e histórico das propostas.
 
 ## 2. Arquitetura proposta
 
 A implementação será dividida em quatro responsabilidades principais:
 
 1. **Modelo existente (`CreditEngine.Proposal`):** continuará representando e validando os dados da proposta. Não terá suas regras de validação modificadas.
-2. **Armazenamento (`CreditEngine.ProposalStore`):** novo processo `GenServer`, responsável por manter propostas, estados atuais e históricos em memória.
+2. **Armazenamento (`CreditEngine.ProposalStore`):** novo processo `GenServer`, responsável por manter propostas, estados atuais e históricos numa tabela DETS, gravada em arquivo.
 3. **Serviço (`CreditEngine.ProposalService`):** nova camada responsável por orquestrar cadastro, consulta, listagem, histórico e análise de propostas cadastradas.
 4. **API Web:** os módulos existentes serão ampliados para expor as novas operações HTTP.
 
@@ -23,7 +23,7 @@ O módulo será um `GenServer` supervisionado pela aplicação OTP.
 
 ### 3.1 Estrutura dos registros
 
-O estado interno manterá um mapa indexado pelo identificador textual da proposta.
+A tabela DETS será do tipo `set`, indexada pelo identificador textual da proposta. O caminho do arquivo é configurado em `config/config.exs` (`:armazenamento`), com um arquivo separado para os testes.
 
 Cada registro armazenará conceitualmente:
 
@@ -49,7 +49,9 @@ O histórico deverá preservar a ordem cronológica. Novas análises serão acre
 
 O processo será iniciado pela árvore de supervisão de `CreditEngine.Application`, utilizando a estratégia `:one_for_one`.
 
-Os dados existirão somente enquanto o processo mantiver seu estado em memória. Não haverá persistência externa ou recuperação após reinicialização.
+Ao iniciar, o processo abre o arquivo DETS; ao ser encerrado pelo supervisor, fecha o arquivo. Cada escrita é sincronizada com o disco (`:dets.sync/1`) antes de a operação ser dada como concluída. Os dados continuam disponíveis depois de reiniciar o processo ou a aplicação.
+
+*Alterado em 23/11/2026: a versão anterior previa estado só em memória, sem recuperação após reinicialização.*
 
 ## 4. Serviço — ProposalService
 

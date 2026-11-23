@@ -146,6 +146,42 @@
     margin-top: 4px;
   }
   .enviar:hover { filter: brightness(1.08); }
+  .salvar {
+    width: 100%;
+    font: inherit;
+    font-weight: 600;
+    background: transparent;
+    color: var(--destaque);
+    border: 1px solid var(--destaque);
+    border-radius: 9px;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .salvar:hover { background: rgba(61,90,254,.06); }
+
+  /* Propostas salvas (incremento 11) */
+  #salvas { margin-top: 20px; }
+  #salvas .topo-salvas { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  #salvas .topo-salvas h2 { margin: 0; }
+  #salvas .aviso { font-size: 13px; color: var(--suave); }
+  #salvas .msg { font-size: 13.5px; margin: 0 0 12px; min-height: 18px; }
+  #salvas .msg.ok { color: var(--verde); }
+  #salvas .msg.falha { color: var(--vermelho); }
+  .tabela { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tabela th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--suave); font-weight: 650; padding: 8px 10px; border-bottom: 1px solid var(--borda); }
+  .tabela td { padding: 9px 10px; border-bottom: 1px solid var(--borda); font-variant-numeric: tabular-nums; }
+  .tabela td.acoes { text-align: right; white-space: nowrap; }
+  .tabela button { font: inherit; font-size: 13px; background: var(--cartao); border: 1px solid var(--borda); border-radius: 7px; padding: 5px 10px; cursor: pointer; margin-left: 6px; }
+  .tabela button:hover { border-color: var(--destaque); }
+  .tabela tr.aberta td { background: #f3f5ff; }
+  .selo { display: inline-block; font-size: 12.5px; font-weight: 650; padding: 3px 9px; border-radius: 999px; background: #eef0f3; color: var(--suave); }
+  .selo.s-aprovado { background: var(--verde-claro); color: var(--verde); }
+  .selo.s-analise_manual { background: var(--ambar-claro); color: var(--ambar); }
+  .selo.s-recusado { background: var(--vermelho-claro); color: var(--vermelho); }
+  .selo.s-recusa_automatica, .selo.s-recusa_seguranca { background: var(--vinho-claro); color: var(--vinho); }
+  #historico { margin-top: 16px; }
+  #historico h3 { font-size: 14px; margin: 0 0 8px; }
 
   .vazio { text-align: center; color: var(--suave); padding: 56px 20px; }
   .vazio p { margin: 4px 0; }
@@ -344,6 +380,7 @@
       </fieldset>
 
       <button class="enviar" type="submit">Analisar proposta</button>
+      <button class="salvar" type="button" id="salvar">Salvar proposta</button>
     </form>
 
     <section class="cartao" id="resultado">
@@ -353,6 +390,16 @@
       </div>
     </section>
   </div>
+
+  <section class="cartao" id="salvas">
+    <div class="topo-salvas">
+      <h2>Propostas salvas</h2>
+      <span class="aviso">Gravadas em arquivo: continuam aqui depois de reiniciar o servidor.</span>
+    </div>
+    <p class="msg" id="msg-salvas"></p>
+    <div id="lista-salvas"><p class="aviso">Carregando…</p></div>
+    <div id="historico"></div>
+  </section>
 </main>
 <footer>CreditEngine · Conceitos de Linguagem de Programação · UFAL</footer>
 
@@ -577,6 +624,134 @@
     barra.querySelectorAll("button").forEach(b => b.classList.remove("ativo"));
     analisar();
   });
+
+  // Propostas salvas (incremento 11): usa as rotas /api/propostas.
+  const msgSalvas = document.getElementById("msg-salvas");
+  const listaSalvas = document.getElementById("lista-salvas");
+  const historicoEl = document.getElementById("historico");
+  let historicoAberto = null;
+
+  function rotuloStatus(status) {
+    return status === "nao_analisada" ? "Não analisada" : (STATUS[status] ? STATUS[status].nome : status);
+  }
+
+  function selo(status) {
+    return `<span class="selo s-${esc(status)}">${esc(rotuloStatus(status))}</span>`;
+  }
+
+  function aviso(texto, ok) {
+    msgSalvas.textContent = texto;
+    msgSalvas.className = "msg " + (ok ? "ok" : "falha");
+  }
+
+  // Mesma conversão do formulário de análise: vazio vira null, número com
+  // vírgula ou ponto vira número, outro texto segue como texto.
+  function valorCampo(nome) {
+    const texto = String(form.elements[nome].value).trim();
+    if (texto === "") return null;
+    const numero = Number(texto.replace(",", "."));
+    return Number.isNaN(numero) ? texto : numero;
+  }
+
+  function corpoProposta() {
+    return {
+      id: form.elements.id.value.trim(),
+      macroeconomic_data: { taxa_inadimplencia_mercado: valorCampo("taxa_inadimplencia_mercado") },
+      behavioral_data: {
+        transacoes_noturnas: valorCampo("transacoes_noturnas"),
+        dispositivos_novos: valorCampo("dispositivos_novos"),
+        tentativas_login_falhas: valorCampo("tentativas_login_falhas")
+      },
+      open_finance_data: {
+        comprometimento_renda: valorCampo("comprometimento_renda"),
+        atrasos_12m: valorCampo("atrasos_12m")
+      },
+      applicant_data: { tempo_relacionamento_anos: valorCampo("tempo_relacionamento_anos") }
+    };
+  }
+
+  async function chamar(metodo, caminho, corpo) {
+    const opcoes = { method: metodo, headers: { "Content-Type": "application/json" } };
+    if (corpo !== undefined) opcoes.body = JSON.stringify(corpo);
+    const resposta = await fetch(caminho, opcoes);
+    return { codigo: resposta.status, dados: await resposta.json() };
+  }
+
+  const rotaProposta = id => "/api/propostas/" + encodeURIComponent(id);
+
+  async function carregarSalvas() {
+    try {
+      const { dados } = await chamar("GET", "/api/propostas");
+      if (!dados.ok) { listaSalvas.innerHTML = `<p class="aviso">${esc(dados.erro.mensagem)}</p>`; return; }
+      if (dados.propostas.length === 0) {
+        listaSalvas.innerHTML = `<p class="aviso">Nenhuma proposta salva ainda. Preencha o formulário e clique em "Salvar proposta".</p>`;
+        return;
+      }
+      listaSalvas.innerHTML = `<table class="tabela"><tr><th>Identificador</th><th>Estado atual</th><th></th></tr>` +
+        dados.propostas.map(p => `
+          <tr class="${p.id === historicoAberto ? "aberta" : ""}">
+            <td>${esc(p.id)}</td>
+            <td>${selo(p.status)}</td>
+            <td class="acoes">
+              <button type="button" data-acao="analisar" data-id="${esc(p.id)}">Analisar</button>
+              <button type="button" data-acao="historico" data-id="${esc(p.id)}">Histórico</button>
+            </td>
+          </tr>`).join("") + `</table>`;
+    } catch (e) {
+      listaSalvas.innerHTML = `<p class="aviso">Não foi possível carregar as propostas salvas.</p>`;
+    }
+  }
+
+  async function mostrarHistorico(id) {
+    historicoAberto = id;
+    const { dados } = await chamar("GET", rotaProposta(id) + "/historico");
+    if (!dados.ok) { historicoEl.innerHTML = ""; aviso(dados.erro.mensagem, false); return; }
+    const linhas = dados.historico.map((h, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${esc(new Date(h.analisada_em).toLocaleString("pt-BR"))}</td>
+        <td>${selo(h.status)}</td>
+        <td>${h.score === null ? "—" : num(h.score * 100, 1) + "%"}</td>
+      </tr>`).join("");
+    historicoEl.innerHTML = `<h3>Histórico de ${esc(id)}</h3>` + (dados.historico.length === 0
+      ? `<p class="aviso">Esta proposta ainda não foi analisada.</p>`
+      : `<table class="tabela"><tr><th>#</th><th>Analisada em</th><th>Decisão</th><th>Probabilidade</th></tr>${linhas}</table>`);
+    carregarSalvas();
+  }
+
+  document.getElementById("salvar").addEventListener("click", async () => {
+    try {
+      const { codigo, dados } = await chamar("POST", "/api/propostas", corpoProposta());
+      if (codigo === 201) {
+        aviso(`Proposta ${dados.proposta.id} salva. Clique em "Analisar" para registrar uma análise.`, true);
+        await mostrarHistorico(dados.proposta.id);
+      } else {
+        aviso(dados.erro.mensagem, false);
+      }
+    } catch (e) {
+      aviso("Não foi possível falar com o servidor.", false);
+    }
+  });
+
+  listaSalvas.addEventListener("click", async e => {
+    const botao = e.target.closest("button[data-acao]");
+    if (!botao) return;
+    const id = botao.dataset.id;
+    try {
+      if (botao.dataset.acao === "analisar") {
+        const { dados } = await chamar("POST", rotaProposta(id) + "/analisar");
+        dados.ok
+          ? aviso(`${id}: ${rotuloStatus(dados.analise.status)}. Análise registrada no histórico.`, true)
+          : aviso(dados.erro.mensagem, false);
+        fetch("/api/status").then(r => r.json()).then(d => atualizarCB(d.circuit_breaker)).catch(() => {});
+      }
+      await mostrarHistorico(id);
+    } catch (err) {
+      aviso("Não foi possível falar com o servidor.", false);
+    }
+  });
+
+  carregarSalvas();
 
   preencher(CENARIOS[2]);
   fetch("/api/status").then(r => r.json()).then(d => atualizarCB(d.circuit_breaker)).catch(() => {});

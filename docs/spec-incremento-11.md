@@ -22,8 +22,7 @@ O incremento contempla:
 
 Não fazem parte deste incremento:
 
-- Persistência em banco de dados.
-- Recuperação de dados após reinicialização.
+- Persistência em banco de dados externo (como PostgreSQL).
 - Implementação de decisões humanas para propostas encaminhadas à análise manual.
 - Alterações nas regras de validação já existentes em `CreditEngine.Proposal`.
 - Redesenho da interface visual existente.
@@ -173,13 +172,15 @@ Erros internos não deverão expor detalhes de implementação ao cliente.
 
 ## 7. Armazenamento
 
-### RF11.14 — Armazenamento em memória
+### RF11.14 — Armazenamento persistente em arquivo
 
-As propostas e seus históricos serão mantidos em memória por meio de um processo `GenServer`, supervisionado pela aplicação OTP.
+As propostas e seus históricos serão mantidos por um processo `GenServer`, supervisionado pela aplicação OTP, que grava os dados numa tabela DETS (Erlang/OTP).
 
-O armazenamento será volátil: os dados serão perdidos quando a aplicação for reiniciada.
+Os dados continuam disponíveis depois que a aplicação é reiniciada. Cada operação só é dada como concluída depois de gravada no arquivo.
 
-Não haverá banco de dados nem recuperação automática neste incremento.
+Não haverá banco de dados externo neste incremento: o DETS já vem com o Erlang/OTP e não adiciona dependência.
+
+*Alterado em 23/11/2026: a versão anterior deste requisito previa armazenamento só em memória, com perda dos dados ao reiniciar. A equipe decidiu manter os dados entre reinicializações usando DETS.*
 
 ### RF11.15 — Indisponibilidade do armazenamento
 
@@ -194,7 +195,7 @@ Uma operação não concluída não poderá alterar o estado ou o histórico da 
 - Linguagem: Elixir.
 - Compatibilidade com a versão Elixir e Erlang/OTP já utilizadas pelo projeto.
 - Reutilização da aplicação OTP e da API web existentes.
-- Armazenamento em memória por `GenServer`.
+- Armazenamento por `GenServer`, gravado em arquivo DETS.
 - Nenhuma dependência externa nova.
 - O decodificador JSON necessário para receber corpos HTTP deverá ser implementado no próprio projeto, contemplando objetos, arrays, strings, números, booleanos e `null`.
 - O encoder JSON existente deverá ser preservado.
@@ -218,3 +219,4 @@ O incremento será considerado concluído quando:
 12. A indisponibilidade do armazenamento for tratada sem simular sucesso.
 13. Os testes existentes do MVP continuarem passando.
 14. Compilação, formatação e testes do projeto forem executados com sucesso.
+15. Propostas e históricos continuarem disponíveis depois de reiniciar a aplicação.

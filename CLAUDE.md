@@ -76,5 +76,6 @@ Execute a partir da pasta `credit_engine/`:
 - Projeto Elixir criado em `credit_engine/`.
 - Primeiro incremento implementado e verificado: recebimento e validação de propostas (`CreditEngine.Proposal`). Resultados em `docs/verificacao-incremento-01.md`. O `spec.md` aguarda aprovação da equipe.
 - Circuit Breaker (T2), detecção de anomalias (T3), score de risco (T4), limiares de decisão (T5), parecer explicável (T6) e o pipeline `CreditEngine.analisar/1` (T7) estão implementados. Os cinco cenários de ponta a ponta (T8) passam e a demonstração pelo `iex` está em `credit_engine/README.md`. A verificação final (T9) está em `docs/verificacao-mvp.md`: 92 testes, 0 falhas, e o MVP atende ao critério de pronto.
-- Interface web de demonstração (T10), adicionada em 20/11 (`plan.md`, seção 13): `:httpd` do Erlang/OTP, sem Phoenix nem dependências externas. Abre com `mix credit_engine.web`. Total atual: 108 testes, 0 falhas.
+- Interface web de demonstração (T10), adicionada em 20/11 (`plan.md`, seção 13): `:httpd` do Erlang/OTP, sem Phoenix nem dependências externas. Abre com `mix credit_engine.web`.
+- Incremento 11 concluído em 23/11 (`docs/spec-incremento-11.md`): `CreditEngine.ProposalStore` (GenServer com tabela DETS, os dados sobrevivem ao reinício), `CreditEngine.ProposalService`, decodificador JSON próprio (`CreditEngine.Web.JSONDecoder`) e as rotas `/api/propostas`. Total atual: 142 testes, 0 falhas.
 - Decisões em aberto consolidadas em `docs/decisoes-pendentes.md`.

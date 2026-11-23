@@ -6,7 +6,7 @@ O **Sistema Inteligente de Análise de Crédito** tem como objetivo apoiar a ava
 
 **Linguagem de programação:** Elixir.
 
-> **Status do projeto:** núcleo do MVP concluído e verificado em 19/11/2026 (`docs/verificacao-mvp.md`), com 92 testes aprovados. Em 20/11/2026, foi adicionada a interface web de demonstração (T10), descrita em `credit_engine/README.md`. O projeto conta atualmente com 108 testes, sem falhas registradas, e os cinco cenários do `plan.md` podem ser demonstrados pelo `iex` ou pela interface web.
+> **Status do projeto:** núcleo do MVP concluído e verificado em 19/11/2026 (`docs/verificacao-mvp.md`), com 92 testes aprovados. Em 20/11/2026, foi adicionada a interface web de demonstração (T10), descrita em `credit_engine/README.md`. Em 23/11/2026, foi concluído o incremento 11: cadastro e histórico de propostas, com os dados gravados em arquivo (DETS), que continuam disponíveis depois de reiniciar a aplicação. O projeto conta atualmente com 142 testes, sem falhas registradas, e os cinco cenários do `plan.md` podem ser demonstrados pelo `iex` ou pela interface web.
 
 ## Objetivos
 
@@ -55,6 +55,7 @@ Essas funcionalidades representam o escopo planejado; não significam que já es
 - **Mix e ExUnit:** estrutura do projeto e testes automatizados, em uso na pasta `credit_engine/`. O projeto não possui dependências externas nesta etapa.
 - **GenServer (OTP):** usado no Circuit Breaker (tarefa T2), supervisionado pela aplicação.
 - **`:httpd` (Erlang/OTP):** servidor da interface web de demonstração (tarefa T10). Já vem com o Erlang, sem dependência externa.
+- **DETS (Erlang/OTP):** tabela gravada em arquivo, usada para guardar as propostas cadastradas e o histórico de análises (incremento 11). Também já vem com o Erlang.
 
 ### Tecnologias da arquitetura final (diagramas)
 
@@ -128,12 +129,13 @@ Tarefas independentes de decisões pendentes podem avançar. Regras de negócio 
 - T8: cinco cenários de ponta a ponta e demonstração pelo `iex` (comandos em `credit_engine/README.md`).
 - T9: verificação final do MVP (`docs/verificacao-mvp.md`).
 - T10: interface web de demonstração (`mix credit_engine.web`, em http://127.0.0.1:4000). Detalhes no `plan.md`, seção 13.
+- Incremento 11: cadastro, consulta, listagem, análise e histórico de propostas, com persistência em arquivo DETS e o painel "Propostas salvas" na interface (`docs/spec-incremento-11.md`, `docs/plan-incremento-11.md` e `docs/tasks-incremento-11.md`).
 
-**Próximas etapas (`plan.md`, seção 11):** correções e roteiro da demonstração (21 e 22/11), ensaio (23/11) e evento final (24/11).
+**Próximas etapas:** apresentação final em formato *pitch*, na quinta, 26/11, entre 15h e 19h.
 
 **Decidido para o MVP em 17/11/2026:** escopo, tecnologias, contratos entre as etapas, formato do parecer e valores de demonstração do Circuit Breaker, das anomalias, do score e dos limiares. Os valores servem para a demonstração e não estão calibrados com dados reais.
 
-**Ainda em aberto:** detalhes das fontes e dados do Open Finance; comportamento de campos duplicados como átomo e texto; identificação, estados e persistência das propostas; algoritmos de produção; recuperação do Circuit Breaker e calibração dos limiares; análise humana e registro das decisões; equidade (*fairness*); estratégia de falhas; resolução das divergências entre diagramas; monitoramento, *data drift*, PSI, retreinamento dos modelos e comunicação assíncrona; metas de desempenho; padronização da nomenclatura e correções dos diagramas; aprovação formal da especificação do incremento 1 e adoção do Credo.
+**Ainda em aberto:** detalhes das fontes e dados do Open Finance; comportamento de campos duplicados como átomo e texto; algoritmos de produção; recuperação do Circuit Breaker e calibração dos limiares; análise humana e registro das decisões; equidade (*fairness*); estratégia de falhas; resolução das divergências entre diagramas; monitoramento, *data drift*, PSI, retreinamento dos modelos e comunicação assíncrona; metas de desempenho; padronização da nomenclatura e correções dos diagramas; aprovação formal da especificação do incremento 1 e adoção do Credo.
 
 A relação completa, com o que foi decidido e o que continua em aberto, está em `docs/decisoes-pendentes.md`. Nenhum valor ou regra de decisão além do que está registrado ali e no `plan.md` deve ser considerado definitivo.
 

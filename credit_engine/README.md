@@ -50,6 +50,37 @@ A página tem:
 
 A interface usa o servidor HTTP que já vem com o Erlang/OTP (`:httpd`), sem Phoenix nem dependências externas, e só aceita conexões do próprio computador. Ela não tem regra de negócio: toda decisão vem de `CreditEngine.analisar/1`.
 
+## Cadastro e histórico de propostas
+
+Além de analisar uma proposta na hora, o sistema pode **cadastrá-la**, analisá-la quantas vezes quiser e guardar o **histórico** de cada análise (incremento 11, especificado em `docs/spec-incremento-11.md`).
+
+Os dados ficam gravados no arquivo `data/propostas.dets`, numa tabela DETS, que já vem com o Erlang/OTP. Por isso eles **continuam lá depois de reiniciar** o servidor. Para começar do zero, pare o servidor e apague a pasta `data/`. Os testes usam outro arquivo (`tmp/test/`), então não mexem nesses dados.
+
+Na interface web, o botão **Salvar proposta** cadastra o que está no formulário, e o painel **Propostas salvas** lista as propostas com o estado atual. Em cada uma, **Analisar** registra uma nova análise e **Histórico** mostra todas as análises, da mais antiga para a mais recente.
+
+As mesmas operações estão na API, com corpo e resposta em JSON:
+
+| Método | Rota | O que faz | Códigos |
+|---|---|---|---|
+| POST | `/api/propostas` | Cadastra uma proposta | 201, 409 (já existe), 422 (dados inválidos) |
+| GET | `/api/propostas` | Lista identificador e estado atual | 200 |
+| GET | `/api/propostas/:id` | Consulta uma proposta | 200, 404 |
+| GET | `/api/propostas/:id/historico` | Histórico de análises | 200, 404 |
+| POST | `/api/propostas/:id/analisar` | Analisa com os dados cadastrados | 200, 404, 422 |
+
+Se o armazenamento estiver indisponível, qualquer rota devolve 500 com uma mensagem genérica, e nada é alterado.
+
+Exemplo no PowerShell, com o servidor aberto:
+
+```powershell
+$proposta = '{"id": "PROP-001", "macroeconomic_data": {"taxa_inadimplencia_mercado": 0.05}, "behavioral_data": {"transacoes_noturnas": 2, "dispositivos_novos": 0, "tentativas_login_falhas": 1}, "open_finance_data": {"comprometimento_renda": 0.5, "atrasos_12m": 1}, "applicant_data": {"tempo_relacionamento_anos": 2}}'
+Invoke-RestMethod -Method Post -Uri http://127.0.0.1:4000/api/propostas -Body $proposta -ContentType "application/json"
+Invoke-RestMethod -Method Post -Uri http://127.0.0.1:4000/api/propostas/PROP-001/analisar
+Invoke-RestMethod -Uri http://127.0.0.1:4000/api/propostas/PROP-001/historico
+```
+
+Se o servidor for encerrado com Ctrl+C, o Erlang pode avisar na próxima vez que o arquivo `não foi fechado corretamente` e repará-lo sozinho. Os dados não se perdem: cada operação só é confirmada depois de gravada no arquivo.
+
 ## Demonstração
 
 Os comandos abaixo mostram, no `iex`, os cinco cenários do critério de pronto (`plan.md`, seção 8). Os mesmos cenários são testados em `test/credit_engine/cenarios_test.exs`.
@@ -211,20 +242,25 @@ credit_engine/
 │   │   ├── ml/supervised.ex              # score de risco (T4)
 │   │   ├── decision/thresholds.ex        # limiares de decisão (T5)
 │   │   ├── compliance/xai.ex             # parecer explicável (T6)
+│   │   ├── proposal_store.ex             # cadastro e histórico em arquivo DETS (incr. 11)
+│   │   ├── proposal_service.ex           # operações de cadastro e análise (incr. 11)
 │   │   ├── web.ex                        # interface web: iniciar e parar (T10)
-│   │   └── web/                          # rotas, API e JSON da interface (T10)
+│   │   └── web/                          # rotas, API e JSON da interface (T10, incr. 11)
 │   └── mix/tasks/credit_engine.web.ex    # comando mix credit_engine.web (T10)
 ├── priv/
 │   └── static/index.html                 # página da interface web (T10)
 ├── config/
-│   └── config.exs                        # valores de demonstração (plan.md, seção 7)
+│   └── config.exs                        # valores de demonstração e arquivo dos dados
+├── data/                                 # propostas salvas (criada ao rodar; fora do Git)
 ├── test/
 │   ├── test_helper.exs
 │   ├── credit_engine_test.exs
 │   └── credit_engine/
 │       ├── cenarios_test.exs             # cinco cenários de ponta a ponta (T8)
 │       ├── pipeline_test.exs             # pipeline (T7)
-│       ├── web_test.exs, web/            # interface web (T10)
+│       ├── proposal_store_test.exs       # armazenamento, inclusive após reiniciar (incr. 11)
+│       ├── proposal_service_test.exs     # cadastro, análise e histórico (incr. 11)
+│       ├── web_test.exs, web/            # interface web e rotas de propostas (T10, incr. 11)
 │       └── ...                           # um arquivo de teste por módulo
 ├── .formatter.exs
 ├── .gitignore
